@@ -1,8 +1,8 @@
 import { ActionFunction } from "@remix-run/node";
-import prisma from "../db.server";
-import { getValidSession, getOfflineSession } from "../utils/sessionManager.server";
-import { AnalyticsCollector } from "../services/analyticsCollector.server";
-import { AnalyticsEmailService } from "../services/emailService.server";
+import prisma from "../../db.server";
+import { getValidSession, getOfflineSession } from "../../utils/sessionManager.server";
+import { AnalyticsCollector } from "../../services/analyticsCollector.server";
+import { AnalyticsEmailService } from "../../services/emailService.server";
 
 export const action: ActionFunction = async ({ request }) => {
   if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {

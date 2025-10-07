@@ -1,14 +1,14 @@
-import { ActionFunction } from "@remix-run/node";
-import prisma from "../db.server";
-import { getValidSession, getOfflineSession } from "../utils/sessionManager.server";
-import { AnalyticsCollector } from "../services/analyticsCollector.server";
-import { AnalyticsEmailService } from "../services/emailService.server";
+import { LoaderFunction } from "@remix-run/node";
+import prisma from "../../db.server";
+import { getValidSession, getOfflineSession } from "../../utils/sessionManager.server";
+import { AnalyticsCollector } from "../../services/analyticsCollector.server";
+import { AnalyticsEmailService } from "../../services/emailService.server";
 
 // Track emails sent in this execution
 let sentInThisRun = new Set<string>();
 
-export const action: ActionFunction = async ({ request }) => {
-  // Security check
+export const loader: LoaderFunction = async ({ request }) => {
+  // Security check - Vercel will add the Authorization header
   if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response('Unauthorized', { status: 401 });
   }
