@@ -24,3 +24,20 @@ model Session {
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
 }
+
+model StoreEmailSettings {
+  id              String   @id @default(cuid())
+  shop            String   @unique
+  fromEmail       String
+  fromName        String
+  enabled         Boolean  @default(true)
+  sendGridApiKey  String?
+  scheduleEnabled Boolean  @default(false)
+  scheduleTime    String   @default("09:00")
+  timezone        String   @default("UTC")
+  accessToken     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("store_email_settings")
+}

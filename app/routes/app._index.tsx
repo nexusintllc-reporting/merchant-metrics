@@ -1,11 +1,11 @@
-// ==================== 1. IMPORTS & DEPENDENCIES ====================
+// ==================== 1. IMPORTS ====================
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigation } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import "../styles/orders.css";
 import { useState, useMemo } from 'react';
 
-// Chart.js imports for data visualization
+// Chart.js imports
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,7 +20,7 @@ import {
 } from 'chart.js';
 import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
 
-// ==================== 2. CHART.JS CONFIGURATION ====================
+// ==================== 2. CHART.JS REGISTRATION ====================
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -33,14 +33,14 @@ ChartJS.register(
   Legend
 );
 
-// ==================== 3. TYPE DEFINITIONS ====================
+// ==================== 3. TYPES ====================
 interface OrderData {
   totalOrders: number;
   fulfilledOrders: number;
   unfulfilledOrders: number;
   totalRevenue: number;
 
-  // Financial metrics
+  // New financial metrics
   totalDiscounts: number;
   totalShipping: number;
   totalTaxes: number;
@@ -52,17 +52,13 @@ interface OrderData {
   taxRate: number;
   returnRate: number;
 
-  // Order metrics
+
   totalItems: number;
   averageOrderValue: number;
   averageItemsPerOrder: number;
-  
-  // Time-based sales data
   dailySales: Array<{ date: string; revenue: number; orders: number; items: number }>;
   weeklySales: Array<{ week: string; revenue: number; orders: number; items: number }>;
   monthlySales: Array<{ month: string; revenue: number; orders: number; items: number }>;
-  
-  // Today's performance
   todayRevenue: number;
   todayOrders: number;
   todayItems: number;
@@ -72,25 +68,17 @@ interface OrderData {
   lastWeekRevenue: number;
   lastWeekOrders: number;
   lastWeekItems: number;
-  
-  // Fulfillment metrics
   todayFulfilled: number;
   todayUnfulfilled: number;
   last7DaysFulfilled: number;
   last7DaysUnfulfilled: number;
   fulfillmentRate: number;
-  
-  // Change metrics
   revenueChangeVsYesterday: number;
   ordersChangeVsYesterday: number;
   itemsChangeVsYesterday: number;
   revenueChangeVsLastWeek: number;
-  
-  // Performance insights
   bestDay: { date: string; revenue: number; orders: number; items: number };
   averageDailyRevenue: number;
-  
-  // Customer analytics
   totalCustomers: number;
   repeatCustomers: number;
   newCustomers: number;
@@ -99,24 +87,17 @@ interface OrderData {
   last7DaysRepeatCustomers: number;
   last7DaysNewCustomers: number;
   last7DaysRepeatCustomerRate: number;
-  
-  // Chart data
   customerTypeData: { new: number; repeat: number };
   fulfillmentStatusData: { fulfilled: number; unfulfilled: number };
   weeklyRevenueTrend: Array<{ week: string; revenue: number }>;
   monthlyComparison: Array<{ month: string; revenue: number; orders: number }>;
   dailyPerformance: Array<{ day: string; revenue: number; orders: number }>;
-  
-  // System info
   ordersLoaded: number;
   shopTimezone: string;
   currentDateInShopTZ: string;
 }
 
 // ==================== 4. HELPER FUNCTIONS ====================
-/**
- * Returns empty data structure for initialization and error states
- */
 function getEmptyData(): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'> {
   return {
     totalOrders: 0,
@@ -124,7 +105,7 @@ function getEmptyData(): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'>
     unfulfilledOrders: 0,
     totalRevenue: 0,
 
-    // Financial metrics
+// New financial metrics
     totalDiscounts: 0,
     totalShipping: 0,
     totalTaxes: 0,
@@ -136,17 +117,12 @@ function getEmptyData(): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'>
     taxRate: 0,
     returnRate: 0,
 
-    // Order metrics
     totalItems: 0,
     averageOrderValue: 0,
     averageItemsPerOrder: 0,
-    
-    // Time-based data
     dailySales: [],
     weeklySales: [],
     monthlySales: [],
-    
-    // Today's performance
     todayRevenue: 0,
     todayOrders: 0,
     todayItems: 0,
@@ -156,25 +132,17 @@ function getEmptyData(): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'>
     lastWeekRevenue: 0,
     lastWeekOrders: 0,
     lastWeekItems: 0,
-    
-    // Fulfillment
     todayFulfilled: 0,
     todayUnfulfilled: 0,
     last7DaysFulfilled: 0,
     last7DaysUnfulfilled: 0,
     fulfillmentRate: 0,
-    
-    // Change metrics
     revenueChangeVsYesterday: 0,
     ordersChangeVsYesterday: 0,
     itemsChangeVsYesterday: 0,
     revenueChangeVsLastWeek: 0,
-    
-    // Performance
     bestDay: { date: '', revenue: 0, orders: 0, items: 0 },
     averageDailyRevenue: 0,
-    
-    // Customer analytics
     totalCustomers: 0,
     repeatCustomers: 0,
     newCustomers: 0,
@@ -183,27 +151,17 @@ function getEmptyData(): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'>
     last7DaysRepeatCustomers: 0,
     last7DaysNewCustomers: 0,
     last7DaysRepeatCustomerRate: 0,
-    
-    // Chart data
     customerTypeData: { new: 0, repeat: 0 },
     fulfillmentStatusData: { fulfilled: 0, unfulfilled: 0 },
     weeklyRevenueTrend: [],
     monthlyComparison: [],
     dailyPerformance: [],
-    
-    // System
     ordersLoaded: 0
   };
 }
 
-// ==================== 5. TIMEZONE UTILITY CLASS ====================
-/**
- * Handles timezone conversion and date formatting for consistent date handling
- */
+// ==================== 5. TIMEZONE UTILITIES ====================
 class TimezoneHelper {
-  /**
-   * Converts UTC date to shop's local date string
-   */
   static getLocalDateKey(utcDate: Date, timezone: string): string {
     try {
       return utcDate.toLocaleDateString('en-CA', { 
@@ -218,23 +176,14 @@ class TimezoneHelper {
     }
   }
 
-  /**
-   * Gets current date in shop's timezone
-   */
   static getCurrentDateInTimezone(timezone: string): string {
     return this.getLocalDateKey(new Date(), timezone);
   }
 
-  /**
-   * Gets formatted date in shop's timezone
-   */
   static getDateInTimezone(date: Date, timezone: string): string {
     return this.getLocalDateKey(date, timezone);
   }
 
-  /**
-   * Generates date range for last N days in shop's timezone
-   */
   static getDateRangeInTimezone(timezone: string, days: number): string[] {
     const dates: string[] = [];
     const now = new Date();
@@ -248,11 +197,9 @@ class TimezoneHelper {
     return dates.reverse(); // Oldest to newest
   }
 
-  /**
-   * Calculates previous date in shop's timezone
-   */
   static getPreviousDate(currentDate: string, timezone: string): string {
     try {
+      // Parse the current date in the shop's timezone
       const current = new Date(currentDate + 'T00:00:00');
       const previous = new Date(current);
       previous.setDate(previous.getDate() - 1);
@@ -267,9 +214,6 @@ class TimezoneHelper {
     }
   }
 
-  /**
-   * Gets week start date in shop's timezone
-   */
   static getWeekStartDate(date: Date, timezone: string): Date {
     const localDateKey = this.getLocalDateKey(date, timezone);
     const localDate = new Date(localDateKey + 'T00:00:00');
@@ -279,9 +223,6 @@ class TimezoneHelper {
     return weekStart;
   }
 
-  /**
-   * Gets month key in YYYY-MM format for shop's timezone
-   */
   static getMonthKey(date: Date, timezone: string): string {
     const localDateKey = this.getLocalDateKey(date, timezone);
     const localDate = new Date(localDateKey + 'T00:00:00');
@@ -289,23 +230,18 @@ class TimezoneHelper {
   }
 }
 
-// ==================== 6. DATA PROCESSING LOGIC ====================
-/**
- * Processes raw order data into structured analytics
- */
+// ==================== 6. DATA PROCESSING ====================
 function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<OrderData, 'shopTimezone' | 'currentDateInShopTZ'> {
-  // Core order metrics
+  // Core metrics
   const totalOrders = orders.length;
   const fulfilledOrders = orders.filter((o: any) => o.node.displayFulfillmentStatus === "FULFILLED").length;
   const unfulfilledOrders = totalOrders - fulfilledOrders;
 
-  // Revenue calculations
   const totalRevenue = orders.reduce((sum: number, o: any) => {
     const amount = parseFloat(o.node.currentTotalPriceSet?.shopMoney?.amount || '0');
     return sum + (isNaN(amount) ? 0 : amount);
   }, 0);
 
-  // Item count calculations
   const totalItems = orders.reduce((sum: number, o: any) => {
     const lineItems = o.node.lineItems?.edges || [];
     const itemsInOrder = lineItems.reduce((itemSum: number, item: any) => {
@@ -314,11 +250,10 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     return sum + itemsInOrder;
   }, 0);
 
-  // Average calculations
   const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
   const averageItemsPerOrder = totalOrders > 0 ? totalItems / totalOrders : 0;
 
-  // Financial metrics calculations
+    // NEW: Calculate additional financial metrics
   const totalDiscounts = orders.reduce((sum: number, o: any) => {
     const amount = parseFloat(o.node.totalDiscountsSet?.shopMoney?.amount || '0');
     return sum + (isNaN(amount) ? 0 : amount);
@@ -343,24 +278,26 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     return sum + refundAmount;
   }, 0);
 
-  // Derived financial metrics
+  // Calculate derived metrics
   const netRevenue = totalRevenue - totalReturns;
   const discountRate = totalRevenue > 0 ? (totalDiscounts / totalRevenue) * 100 : 0;
   const shippingRate = totalRevenue > 0 ? (totalShipping / totalRevenue) * 100 : 0;
   const taxRate = totalRevenue > 0 ? (totalTaxes / totalRevenue) * 100 : 0;
   const returnRate = totalRevenue > 0 ? (totalReturns / totalRevenue) * 100 : 0;
 
-  // Timezone-based date calculations
+  // ==================== FIXED: PROPER TIMEZONE HANDLING ====================
   const salesByDay: Record<string, { revenue: number; orders: number; items: number }> = {};
   const salesByWeek: Record<string, { revenue: number; orders: number; items: number }> = {};
   const salesByMonth: Record<string, { revenue: number; orders: number; items: number }> = {};
 
+  // FIXED: Get current date IN SHOP'S TIMEZONE
   const currentDateInShopTZ = TimezoneHelper.getCurrentDateInTimezone(shopTimezone);
   const yesterdayInShopTZ = TimezoneHelper.getPreviousDate(currentDateInShopTZ, shopTimezone);
   const lastWeekSameDayInShopTZ = TimezoneHelper.getPreviousDate(currentDateInShopTZ, shopTimezone);
+  
+  // FIXED: Generate last 7 days in shop's timezone
   const last7DaysKeys = TimezoneHelper.getDateRangeInTimezone(shopTimezone, 7);
 
-  // Initialize time-based metrics
   let todayRevenue = 0;
   let todayOrders = 0;
   let todayItems = 0;
@@ -376,7 +313,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
   let last7DaysFulfilled = 0;
   let last7DaysUnfulfilled = 0;
 
-  // Process each order with timezone conversion
+  // Process each order with proper timezone conversion
   orders.forEach((o: any) => {
     const createdAtUTC = new Date(o.node.createdAt);
     const revenue = parseFloat(o.node.currentTotalPriceSet?.shopMoney?.amount || '0');
@@ -386,16 +323,16 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
       return sum + (item.node.quantity || 0);
     }, 0);
     
-    // Convert UTC to shop's local date
+    // Convert UTC order date to shop's local date
     const dateKey = TimezoneHelper.getLocalDateKey(createdAtUTC, shopTimezone);
     
-    // Time-based comparisons
+    // FIXED: Compare using shop's timezone dates
     const isToday = dateKey === currentDateInShopTZ;
     const isYesterday = dateKey === yesterdayInShopTZ;
     const isLastWeekSameDay = dateKey === lastWeekSameDayInShopTZ;
     const isLast7Days = last7DaysKeys.includes(dateKey);
 
-    // Aggregate today's metrics
+    // Today's metrics (in shop's timezone)
     if (isToday) {
       todayRevenue += revenue;
       todayOrders += 1;
@@ -408,21 +345,21 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
       }
     }
     
-    // Aggregate yesterday's metrics
+    // Yesterday's metrics (in shop's timezone)
     if (isYesterday) {
       yesterdayRevenue += revenue;
       yesterdayOrders += 1;
       yesterdayItems += itemsInOrder;
     }
     
-    // Aggregate last week metrics
+    // Last week metrics (in shop's timezone)
     if (isLastWeekSameDay) {
       lastWeekRevenue += revenue;
       lastWeekOrders += 1;
       lastWeekItems += itemsInOrder;
     }
 
-    // Last 7 days fulfillment tracking
+    // Last 7 days fulfillment (in shop's timezone)
     if (isLast7Days) {
       if (o.node.displayFulfillmentStatus === "FULFILLED") {
         last7DaysFulfilled += 1;
@@ -431,7 +368,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
       }
     }
 
-    // Daily aggregation
+    // Daily aggregation (using shop's timezone)
     if (!salesByDay[dateKey]) {
       salesByDay[dateKey] = { revenue: 0, orders: 0, items: 0 };
     }
@@ -439,7 +376,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     salesByDay[dateKey].orders += 1;
     salesByDay[dateKey].items += itemsInOrder;
 
-    // Weekly aggregation
+    // Weekly aggregation (using shop's timezone)
     const weekStart = TimezoneHelper.getWeekStartDate(createdAtUTC, shopTimezone);
     const weekKey = `${weekStart.getFullYear()}-W${Math.ceil((weekStart.getDate() + 6) / 7)}`;
     
@@ -450,7 +387,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     salesByWeek[weekKey].orders += 1;
     salesByWeek[weekKey].items += itemsInOrder;
 
-    // Monthly aggregation
+    // Monthly aggregation (using shop's timezone)
     const monthKey = TimezoneHelper.getMonthKey(createdAtUTC, shopTimezone);
     if (!salesByMonth[monthKey]) {
       salesByMonth[monthKey] = { revenue: 0, orders: 0, items: 0 };
@@ -474,7 +411,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
   const repeatCustomerRate = totalCustomers > 0 ? (repeatCustomers / totalCustomers) * 100 : 0;
   const newCustomers = totalCustomers - repeatCustomers;
 
-  // Last 7 days customer analytics
+  // Last 7 days customer analytics (using shop's timezone)
   const last7DaysCustomers: Record<string, number> = {};
   orders.forEach((o: any) => {
     const createdAtUTC = new Date(o.node.createdAt);
@@ -493,7 +430,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
   const last7DaysRepeatCustomerRate = last7DaysTotalCustomers > 0 ? (last7DaysRepeatCustomers / last7DaysTotalCustomers) * 100 : 0;
   const last7DaysNewCustomers = last7DaysTotalCustomers - last7DaysRepeatCustomers;
 
-  // Process structured data for charts
+  // FIXED: Process daily data using shop's timezone
   const dailySales = last7DaysKeys.map(date => {
     const dayData = salesByDay[date] || { revenue: 0, orders: 0, items: 0 };
     return {
@@ -504,7 +441,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     };
   });
 
-  // Weekly data processing (last 8 weeks)
+  // Process weekly data (last 8 weeks)
   const weeklyEntries = Object.entries(salesByWeek)
     .sort((a, b) => a[0].localeCompare(b[0]))
     .slice(-8);
@@ -516,7 +453,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     items: data.items
   }));
 
-  // Monthly data processing (last 6 months)
+  // Process monthly data (last 6 months)
   const monthlyEntries = Object.entries(salesByMonth)
     .sort((a, b) => a[0].localeCompare(b[0]))
     .slice(-6);
@@ -528,7 +465,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     items: data.items
   }));
 
-  // Performance metrics calculations
+  // Additional metrics
   const fulfillmentRate = totalOrders > 0 ? (fulfilledOrders / totalOrders) * 100 : 0;
   
   const revenueChangeVsYesterday = yesterdayRevenue > 0 
@@ -555,7 +492,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     ? dailySales.reduce((sum, day) => sum + day.revenue, 0) / dailySales.length 
     : 0;
 
-  // Chart data preparation
+  // Chart data
   const customerTypeData = {
     new: newCustomers,
     repeat: repeatCustomers
@@ -597,8 +534,7 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     fulfilledOrders,
     unfulfilledOrders,
     totalRevenue,
-
-    // Financial metrics
+// New financial metrics
     totalDiscounts,
     totalShipping,
     totalTaxes,
@@ -610,17 +546,14 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     taxRate,
     returnRate,
 
-    // Order metrics
     totalItems,
     averageOrderValue,
     averageItemsPerOrder,
-    
-    // Time-based data
     dailySales,
     weeklySales,
     monthlySales,
     
-    // Today's performance
+    // Today's performance metrics
     todayRevenue,
     todayOrders,
     todayItems,
@@ -665,21 +598,18 @@ function processOrdersData(orders: any[], shopTimezone: string = 'UTC'): Omit<Or
     monthlyComparison,
     dailyPerformance,
 
-    // System info
+    // Debug info
     ordersLoaded: orders.length,
   };
 }
 
 // ==================== 7. LOADER FUNCTION ====================
-/**
- * Server-side data loader for orders dashboard
- */
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
     const { admin, session } = await authenticate.admin(request);
     const shop = session.shop;
 
-    // Fetch shop timezone from Shopify API
+    // Get shop timezone from Shopify
     const shopResponse = await admin.graphql(`
       {
         shop {
@@ -691,73 +621,73 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const shopData = await shopResponse.json() as any;
     const shopTimezone = shopData.data?.shop?.ianaTimezone || 'UTC';
 
-    // Paginated orders fetching
+    // ==================== FETCH ORDERS WITH PAGINATION ====================
     let allOrders: any[] = [];
     let hasNextPage = true;
     let endCursor: string | null = null;
 
     while (hasNextPage && allOrders.length < 1000) {
       const ordersQuery = `
-        {
-          orders(
-            first: 250, 
-            ${endCursor ? `after: "${endCursor}",` : ''}
-            sortKey: CREATED_AT, 
-            reverse: true
-          ) {
-            pageInfo {
-              hasNextPage
-              endCursor
+  {
+    orders(
+      first: 250, 
+      ${endCursor ? `after: "${endCursor}",` : ''}
+      sortKey: CREATED_AT, 
+      reverse: true
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          createdAt
+          displayFulfillmentStatus
+          currentTotalPriceSet {
+            shopMoney {
+              amount
             }
+          }
+          totalShippingPriceSet {
+            shopMoney {
+              amount
+            }
+          }
+          totalTaxSet {
+            shopMoney {
+              amount
+            }
+          }
+          totalDiscountsSet {
+            shopMoney {
+              amount
+            }
+          }
+                          lineItems(first: 10) {
             edges {
               node {
-                id
-                createdAt
-                displayFulfillmentStatus
-                currentTotalPriceSet {
+                quantity
+                originalTotalSet {
                   shopMoney {
                     amount
                   }
                 }
-                totalShippingPriceSet {
+                discountedTotalSet {
                   shopMoney {
                     amount
                   }
                 }
-                totalTaxSet {
-                  shopMoney {
-                    amount
-                  }
-                }
-                totalDiscountsSet {
-                  shopMoney {
-                    amount
-                  }
-                }
-                lineItems(first: 10) {
-                  edges {
-                    node {
-                      quantity
-                      originalTotalSet {
-                        shopMoney {
-                          amount
-                        }
-                      }
-                      discountedTotalSet {
-                        shopMoney {
-                          amount
-                        }
-                      }
-                    }
-                  }
-                }
-                refunds {
-                  totalRefundedSet {
-                    shopMoney {
-                      amount
-                    }
-                  }
-                }
+              }
+            }
+          }
+          refunds {
+            totalRefundedSet {
+              shopMoney {
+                amount
+              }
+            }
+          }
                 customer {
                   id
                 }
@@ -785,7 +715,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     const orders = allOrders;
 
-    // Return empty data if no orders found
+    // ==================== RETURN EMPTY DATA IF NO ORDERS ====================
     if (orders.length === 0) {
       return json({ 
         ...getEmptyData(), 
@@ -794,7 +724,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       });
     }
 
-    // Process orders data
+    // ==================== PROCESS ORDERS DATA ====================
     const processedData = processOrdersData(orders, shopTimezone);
     return json({ 
       ...processedData, 
@@ -813,9 +743,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 // ==================== 8. ICON COMPONENTS ====================
-/**
- * SVG Icon components for consistent UI
- */
 const Icon = {
   Print: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -831,23 +758,10 @@ const Icon = {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M16 18l2.29-2.29-4.88-4.88-4 4L2 7.41 3.41 6l6 6 4-4 6.3 6.29L22 12v6z"/>
     </svg>
-  ),
-  Loading: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 4V2A10 10 0 00 2 12h2a8 8 0 018-8z"/>
-    </svg>
-  ),
-  Analytics: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M3 22h18v-2H3v2zM3 2v2h18V2H3zm10 16h4V6h-4v12zm-6 0h4v-4H7v4z"/>
-    </svg>
   )
 };
 
 // ==================== 9. LOADING COMPONENT ====================
-/**
- * Loading progress indicator with step-by-step progress
- */
 function LoadingProgress() {
   const loadingSteps = [
     "Fetching recent orders...",
@@ -873,9 +787,7 @@ function LoadingProgress() {
       <div className="loading-steps">
         {loadingSteps.map((step, index) => (
           <div key={index} className="loading-step">
-            <div className="step-indicator">
-              <Icon.Loading />
-            </div>
+            <div className="step-indicator">⟳</div>
             <div className="step-text">{step}</div>
           </div>
         ))}
@@ -884,10 +796,7 @@ function LoadingProgress() {
   );
 }
 
-// ==================== 10. MAIN ORDERS COMPONENT ====================
-/**
- * Main orders dashboard component with analytics and charts
- */
+// ==================== 10. MAIN COMPONENT ====================
 export default function Orders() {
   const data = useLoaderData<typeof loader>();
   const navigation = useNavigation();
@@ -895,7 +804,7 @@ export default function Orders() {
 
   const isLoading = navigation.state === 'loading';
 
-  // ==================== FORMATTING UTILITIES ====================
+  // ==================== HELPER FUNCTIONS ====================
   const formatCurrency = (amount: number) => `$${amount.toFixed(2)}`;
   const formatNumber = (num: number) => num.toFixed(0);
   const formatPercent = (num: number) => `${num.toFixed(1)}%`;
@@ -1174,7 +1083,8 @@ export default function Orders() {
             </div>
           </div>
 
-          {/* LAST 7 DAYS SUMMARY */}
+
+           {/* LAST 7 DAYS SUMMARY */}
           <div className="last7days-section">
             <h3>Last 7 Days Performance</h3>
             
@@ -1209,50 +1119,54 @@ export default function Orders() {
               </div>
             </div>
 
-            {/* Daily Breakdown */}
-            <div className="daily-breakdown">
-              <h4>Daily Breakdown</h4>
-              <div className="daily-cards-container">
-                {data.dailySales.map((day, index) => {
-                  const [year, month, dayNum] = day.date.split('-').map(Number);
-                  const date = new Date(year, month - 1, dayNum);
-                  
-                  const isToday = day.date === data.currentDateInShopTZ;
-                  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                  
-                  return (
-                    <div key={day.date} className={`daily-card ${isToday ? 'today' : ''}`}>
-                      <div className="daily-card-header">
-                        <div className="daily-date">
-                          {date.getDate()}/{date.getMonth() + 1}
-                        </div>
-                        <div className="daily-day">
-                          {dayNames[date.getDay()]}
-                        </div>
-                      </div>
-                      
-                      <div className="daily-metrics">
-                        <div className="daily-metric orders">
-                          <span className="daily-metric-label">Orders</span>
-                          <span className="daily-metric-value">{formatNumber(day.orders)}</span>
-                        </div>
-                        
-                        <div className="daily-metric revenue">
-                          <span className="daily-metric-label">Revenue</span>
-                          <span className="daily-metric-value">{formatCurrency(day.revenue)}</span>
-                        </div>
-                        
-                        <div className="daily-metric items">
-                          <span className="daily-metric-label">Items</span>
-                          <span className="daily-metric-value">{formatNumber(day.items)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+       
+
+{/* Daily Breakdown */}
+<div className="daily-breakdown">
+  <h4>Daily Breakdown</h4>
+  <div className="daily-cards-container">
+    {data.dailySales.map((day, index) => {
+      // Parse the date correctly from YYYY-MM-DD format
+      const [year, month, dayNum] = day.date.split('-').map(Number);
+      const date = new Date(year, month - 1, dayNum); // month is 0-indexed in Date
+      
+      const isToday = day.date === data.currentDateInShopTZ;
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      
+      return (
+        <div key={day.date} className={`daily-card ${isToday ? 'today' : ''}`}>
+          <div className="daily-card-header">
+            <div className="daily-date">
+              {date.getDate()}/{date.getMonth() + 1}
+            </div>
+            <div className="daily-day">
+              {dayNames[date.getDay()]}
             </div>
           </div>
+          
+          <div className="daily-metrics">
+            <div className="daily-metric orders">
+              <span className="daily-metric-label">Orders</span>
+              <span className="daily-metric-value">{formatNumber(day.orders)}</span>
+            </div>
+            
+            <div className="daily-metric revenue">
+              <span className="daily-metric-label">Revenue</span>
+              <span className="daily-metric-value">{formatCurrency(day.revenue)}</span>
+            </div>
+            
+            <div className="daily-metric items">
+              <span className="daily-metric-label">Items</span>
+              <span className="daily-metric-value">{formatNumber(day.items)}</span>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+          </div>
+        </div>
 
           {/* WEEK-OVER-WEEK INSIGHT */}
           <div className="secondary-metrics">
@@ -1289,7 +1203,7 @@ export default function Orders() {
                 <div className="customer-metric-label">Repeat Customer Rate</div>
               </div>
             </div>
-          </div>
+         </div>
   
           {/* 7-DAY CUSTOMER INSIGHTS */}
           <div className="customer-metrics">
@@ -1318,7 +1232,7 @@ export default function Orders() {
             </div>
           </div>
 
-          {/* FINANCIAL METRICS SECTION */}
+   {/* FINANCIAL METRICS SECTION */}
           <div className="financial-metrics">
             <h3>Financial Breakdown</h3>
             <div className="financial-metrics-grid">
@@ -1353,6 +1267,11 @@ export default function Orders() {
               </div>
             </div>
           </div>
+
+
+
+
+        
 
         {/* CHARTS & ANALYTICS SECTION */}
         <div className="charts-section">
@@ -1449,20 +1368,22 @@ export default function Orders() {
           </div>
         </div>
 
-        {/* APP FOOTER */}
-        <div className="app-footer">
-          <div className="footer-content">
-            <p>
-              <strong>Orders Analyzed:</strong> {data.ordersLoaded} orders • 
-              <strong> Net Revenue:</strong> {formatCurrency(data.netRevenue)} • 
-              <strong> Data Updated:</strong> {new Date().toLocaleDateString()}
-            </p>
-            <p className="footer-brand">
-              <Icon.Analytics />
-              Orders Dashboard - Powering Your Business Insights
-            </p>
-          </div>
-        </div>
+
+{/* Success Metrics Footer with End Message */}
+{/* Simple Footer */}
+<div className="app-footer">
+  <div className="footer-content">
+    <p>
+      <strong>Orders Analyzed:</strong> {data.ordersLoaded} orders • 
+      <strong> Net Revenue:</strong> {formatCurrency(data.netRevenue)} • 
+      <strong> Data Updated:</strong> {new Date().toLocaleDateString()}
+    </p>
+    <p className="footer-brand">📊 Orders Dashboard - Powering Your Business Insights</p>
+  </div>
+</div>
+        {/* DEBUG INFO */}
+        
+
       </div>
     </div>
   );
