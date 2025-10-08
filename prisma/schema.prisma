@@ -36,8 +36,22 @@ model StoreEmailSettings {
   scheduleTime    String   @default("09:00")
   timezone        String   @default("UTC")
   accessToken     String?
+  lastSent        DateTime?  // ADD THIS FIELD
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   @@map("store_email_settings")
+}
+
+// ADD THIS NEW MODEL
+model EmailSentLog {
+  id           String   @id @default(cuid())
+  shop         String
+  scheduleTime String
+  sentDate     DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([shop, sentDate])
+  @@unique([shop, scheduleTime, sentDate])
+  @@map("email_sent_log")
 }
