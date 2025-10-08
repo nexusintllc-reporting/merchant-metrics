@@ -2039,399 +2039,619 @@
 
 
 
-
-
-
-
-
-/* ==================== MOBILE REDESIGN - OPTIMIZED VERSION ==================== */
+/* ==================== MOBILE REDESIGN - PROFESSIONAL STATIC LAYOUT ==================== */
 
 /* Tablets & Mobile (1024px and below) */
 @media (max-width: 1024px) {
   .orders-dashboard {
-    padding: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 16px;
+    background: #f8fafc;
     min-height: 100vh;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
+  /* ==================== HEADER - PROFESSIONAL & COMPACT ==================== */
   .dashboard-header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 16px; /* Smaller radius */
-    margin: 0 0 16px 0; /* Reduced margin */
-    padding: 16px; /* Reduced padding */
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Smaller shadow */
+    background: #ffffff;
+    border-radius: 12px;
+    margin: 0 0 20px 0;
+    padding: 16px 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;
-    gap: 12px; /* Reduced gap */
+    justify-content: space-between;
+    align-items: center;
     position: relative;
-    z-index: 10;
   }
 
   .dashboard-header h1 {
-    font-size: 1.25rem; /* Smaller title */
-    color: #1a202c;
-    text-align: center;
+    font-size: 1.25rem;
+    color: #1e293b;
     margin: 0;
     font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
   .print-button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    border-radius: 10px; /* Smaller radius */
-    padding: 10px 16px; /* Smaller padding */
-    color: white;
+    background: #ffffff;
+    border: 1.5px solid #3b82f6;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #3b82f6;
     font-weight: 600;
-    font-size: 0.85rem; /* Smaller font */
-    width: 100%;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3); /* Smaller shadow */
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: none;
     transition: all 0.2s ease;
   }
 
-  .print-button:active {
-    transform: scale(0.98);
-    box-shadow: 0 1px 5px rgba(102, 126, 234, 0.4);
+  .print-button:hover {
+    background: #3b82f6;
+    color: #ffffff;
+    transform: none;
   }
 
-  /* ==================== TODAY'S PERFORMANCE - OPTIMIZED ==================== */
+  .print-button svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* ==================== TODAY'S PERFORMANCE - CLEAN CARD DESIGN ==================== */
   .today-performance {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 16px; /* Smaller radius */
-    padding: 16px; /* Reduced padding */
-    margin-bottom: 16px; /* Reduced margin */
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Smaller shadow */
-    position: relative;
-    z-index: 5;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   .today-performance h2 {
-    font-size: 1.1rem; /* Smaller heading */
-    color: #2d3748;
-    text-align: center;
-    margin: 0 0 16px 0; /* Reduced margin */
-    padding: 0;
-    border: none;
-    position: relative;
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
     font-weight: 600;
+    letter-spacing: -0.025em;
   }
 
-  .today-performance h2::after {
-    content: '';
-    position: absolute;
-    bottom: -6px; /* Adjusted position */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px; /* Smaller line */
-    height: 2px; /* Thinner line */
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 1px;
-  }
-
-  /* Primary Metrics - More Compact */
+  /* Primary Metrics - Clean Grid */
   .primary-metrics-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Reduced gap */
-    margin-bottom: 16px; /* Reduced margin */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
   .metric-card {
-    background: linear-gradient(135deg, #ffffff, #f7fafc);
-    border: none;
-    border-radius: 12px; /* Smaller radius */
-    padding: 16px; /* Reduced padding */
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06); /* Smaller shadow */
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
     transition: all 0.2s ease;
-    border-left: 4px solid; /* Thinner border */
-    min-height: 90px; /* Reduced height */
+    position: relative;
   }
 
-  .metric-card.orders {
-    border-left-color: #4299e1;
-    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
   }
 
-  .metric-card.revenue {
-    border-left-color: #48bb78;
-    background: linear-gradient(135deg, #f0fff4, #c6f6d5);
-  }
+  .metric-card.orders::before { background: #3b82f6; }
+  .metric-card.revenue::before { background: #10b981; }
+  .metric-card.items::before { background: #8b5cf6; }
 
-  .metric-card.items {
-    border-left-color: #9f7aea;
-    background: linear-gradient(135deg, #faf5ff, #e9d8fd);
+  .metric-card:hover {
+    border-color: #cbd5e1;
+    transform: none;
   }
 
   .metric-value {
-    font-size: 1.75rem; /* Smaller value */
-    font-weight: 800;
-    margin: 0 0 6px 0; /* Reduced margin */
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
     line-height: 1;
   }
 
+  .metric-card.orders .metric-value { color: #1d4ed8; }
+  .metric-card.revenue .metric-value { color: #047857; }
+  .metric-card.items .metric-value { color: #7c3aed; }
+
   .metric-label {
-    font-size: 0.85rem; /* Smaller label */
-    color: #4a5568;
-    margin: 0 0 8px 0; /* Reduced margin */
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0 0 8px 0;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px; /* Reduced gap */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .metric-change {
-    font-size: 0.75rem; /* Smaller change text */
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 4px 8px; /* Smaller padding */
-    border-radius: 12px; /* Smaller radius */
+    padding: 4px 8px;
+    border-radius: 6px;
     display: inline-flex;
     align-items: center;
-    gap: 4px; /* Reduced gap */
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
+    gap: 4px;
+  }
+
+  .metric-change.positive {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+  }
+
+  .metric-change.negative {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
   }
 
   .metric-change svg {
-    width: 12px; /* Smaller icon */
+    width: 12px;
     height: 12px;
   }
 
-  /* Fulfillment Metrics - More Compact */
+  /* Fulfillment Metrics - Compact Status Grid */
   .fulfillment-metrics-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px; /* Reduced gap */
-    margin: 16px 0; /* Reduced margin */
+    gap: 12px;
+    margin: 20px 0;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
   }
 
   .fulfillment-metric-card {
-    background: linear-gradient(135deg, #ffffff, #f8fafc);
-    border: none;
-    border-radius: 12px; /* Smaller radius */
-    padding: 14px; /* Reduced padding */
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Smaller shadow */
     transition: all 0.2s ease;
-    border-top: 3px solid; /* Thinner border */
-    min-height: 75px; /* Reduced height */
   }
 
-  .fulfillment-metric-card.today-fulfilled {
-    border-top-color: #48bb78;
-    background: linear-gradient(135deg, #f0fff4, #c6f6d5);
-  }
-
-  .fulfillment-metric-card.today-unfulfilled {
-    border-top-color: #ed8936;
-    background: linear-gradient(135deg, #fffaf0, #fed7aa);
-  }
-
-  .fulfillment-metric-card.week-fulfilled {
-    border-top-color: #4299e1;
-    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
-  }
-
-  .fulfillment-metric-card.week-unfulfilled {
-    border-top-color: #f56565;
-    background: linear-gradient(135deg, #fff5f5, #fed7d7);
+  .fulfillment-metric-card:hover {
+    border-color: #cbd5e1;
   }
 
   .fulfillment-metric-value {
-    font-size: 1.3rem; /* Smaller value */
-    font-weight: 800;
-    margin: 0 0 4px 0; /* Reduced margin */
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
     line-height: 1;
   }
 
+  .fulfillment-metric-card.today-fulfilled .fulfillment-metric-value { color: #047857; }
+  .fulfillment-metric-card.today-unfulfilled .fulfillment-metric-value { color: #d97706; }
+  .fulfillment-metric-card.week-fulfilled .fulfillment-metric-value { color: #0369a1; }
+  .fulfillment-metric-card.week-unfulfilled .fulfillment-metric-value { color: #dc2626; }
+
   .fulfillment-metric-label {
-    font-size: 0.7rem; /* Smaller label */
+    font-size: 0.7rem;
     font-weight: 600;
-    color: #4a5568;
+    color: #475569;
     margin: 0 0 2px 0;
     text-transform: uppercase;
-    letter-spacing: 0.3px; /* Reduced spacing */
+    letter-spacing: 0.05em;
   }
 
   .fulfillment-metric-period {
-    font-size: 0.65rem; /* Smaller period */
-    color: #718096;
+    font-size: 0.65rem;
+    color: #94a3b8;
     font-weight: 500;
   }
 
-  /* ==================== SCROLLING FIXES ==================== */
-  #dashboard-content {
-    position: relative;
-    z-index: 1;
+  /* ==================== LAST 7 DAYS - CLEAN DATA GRID ==================== */
+  .last7days-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  /* Ensure smooth scrolling */
-  .orders-dashboard,
-  .today-performance,
-  .last7days-section,
-  .customer-metrics,
-  .financial-metrics {
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  .last7days-section h3 {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+    font-weight: 600;
+    letter-spacing: -0.025em;
   }
 
-  /* Prevent any floating/sticky behavior */
-  .dashboard-header,
-  .today-performance,
-  .last7days-section,
-  .customer-metrics,
-  .financial-metrics,
-  .charts-section {
-    position: static !important;
-    transform: none !important;
+  .last7days-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
-  /* ==================== OTHER SECTIONS - CONSISTENT SIZING ==================== */
-  .last7days-section,
-  .customer-metrics,
-  .financial-metrics {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 16px; /* Consistent smaller radius */
-    padding: 16px; /* Consistent reduced padding */
-    margin: 16px 0; /* Consistent reduced margin */
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .last7days-section h3,
-  .customer-metrics h3,
-  .financial-metrics h3 {
-    font-size: 1.1rem; /* Consistent smaller heading */
-    color: #2d3748;
+  .last7days-total-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
     text-align: center;
-    margin: 0 0 16px 0; /* Consistent reduced margin */
-    padding: 0;
-    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .last7days-total-card:hover {
+    border-color: #cbd5e1;
+  }
+
+  .last7days-total-value {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    line-height: 1;
+  }
+
+  .last7days-total-card:nth-child(1) .last7days-total-value { color: #0369a1; }
+  .last7days-total-card:nth-child(2) .last7days-total-value { color: #047857; }
+  .last7days-total-card:nth-child(3) .last7days-total-value { color: #7c3aed; }
+  .last7days-total-card:nth-child(4) .last7days-total-value { color: #d97706; }
+
+  .last7days-total-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  /* Daily Breakdown - Horizontal Scroll Cards */
+  .daily-breakdown h4 {
+    font-size: 0.9rem;
+    color: #374151;
+    margin: 0 0 16px 0;
     font-weight: 600;
   }
 
-  /* Charts section adjustments */
+  .daily-cards-container {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 4px;
+    margin: 0 -4px;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+  }
+
+  .daily-cards-container::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .daily-cards-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 2px;
+  }
+
+  .daily-cards-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+
+  .daily-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    min-width: 100px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .daily-card.today {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #ffffff;
+  }
+
+  .daily-card.today .daily-date,
+  .daily-card.today .daily-day,
+  .daily-card.today .daily-metric-label,
+  .daily-card.today .daily-metric-value {
+    color: #ffffff;
+  }
+
+  .daily-card:hover {
+    border-color: #cbd5e1;
+  }
+
+  .daily-card-header {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .daily-date {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin: 0 0 2px 0;
+  }
+
+  .daily-day {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .daily-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .daily-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+  }
+
+  .daily-metric-label {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .daily-metric-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  /* ==================== CUSTOMER METRICS - CLEAN STATS ==================== */
+  .customer-metrics {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-metrics h3 {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .customer-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .customer-metric-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .customer-metric-card:hover {
+    border-color: #cbd5e1;
+  }
+
+  .customer-metric-value {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    line-height: 1;
+  }
+
+  .customer-metric-card.total-customers .customer-metric-value { color: #0369a1; }
+  .customer-metric-card.new-customers .customer-metric-value { color: #d97706; }
+  .customer-metric-card.repeat-customers .customer-metric-value { color: #047857; }
+  .customer-metric-card.loyalty-rate .customer-metric-value { color: #7c3aed; }
+
+  .customer-metric-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  /* ==================== FINANCIAL METRICS - COMPACT GRID ==================== */
+  .financial-metrics {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .financial-metrics h3 {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .financial-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .financial-metric-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .financial-metric-card:hover {
+    border-color: #cbd5e1;
+  }
+
+  .financial-metric-card.net-revenue {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+  }
+
+  .financial-metric-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    line-height: 1;
+  }
+
+  .financial-metric-card.discounts .financial-metric-value { color: #d97706; }
+  .financial-metric-card.shipping .financial-metric-value { color: #0369a1; }
+  .financial-metric-card.taxes .financial-metric-value { color: #047857; }
+  .financial-metric-card.returns .financial-metric-value { color: #dc2626; }
+  .financial-metric-card.net-revenue .financial-metric-value { color: #7c3aed; }
+
+  .financial-metric-label {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 2px 0;
+  }
+
+  .financial-metric-rate {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* ==================== CHARTS - CLEAN CONTAINERS ==================== */
   .charts-section {
-    margin: 16px 0; /* Reduced margin */
+    margin: 20px 0;
   }
 
   .charts-section h2 {
-    font-size: 1.1rem; /* Smaller heading */
-    color: #2d3748;
-    text-align: center;
-    margin: 0 0 16px 0; /* Reduced margin */
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .chart-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 16px; /* Smaller radius */
-    padding: 16px; /* Reduced padding */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border: none;
-    min-height: 180px; /* Slightly reduced height */
-    margin-bottom: 16px; /* Consistent spacing */
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+  }
+
+  .chart-header {
+    margin-bottom: 12px;
+  }
+
+  .chart-title {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 600;
+  }
+
+  .chart-legend {
+    font-size: 0.7rem;
+    gap: 8px;
+  }
+
+  .legend-item {
+    gap: 4px;
+  }
+
+  .legend-color {
+    width: 8px;
+    height: 8px;
   }
 }
 
 /* Small Mobile Optimizations (below 400px) */
 @media (max-width: 400px) {
   .orders-dashboard {
-    padding: 8px;
+    padding: 12px;
   }
 
   .dashboard-header {
-    padding: 14px;
-    margin-bottom: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
   }
 
   .dashboard-header h1 {
-    font-size: 1.1rem;
+    font-size: 1.125rem;
   }
 
   .print-button {
-    padding: 8px 14px;
-    font-size: 0.8rem;
+    padding: 6px 12px;
+    font-size: 0.75rem;
   }
 
   .today-performance,
   .last7days-section,
   .customer-metrics,
-  .financial-metrics,
-  .chart-container {
-    padding: 14px;
-    margin-bottom: 14px;
+  .financial-metrics {
+    padding: 16px;
+    margin-bottom: 16px;
   }
 
-  .today-performance h2 {
-    font-size: 1rem;
-    margin-bottom: 14px;
+  .primary-metrics-grid {
+    gap: 8px;
   }
 
   .metric-card {
-    padding: 14px;
-    min-height: 80px;
+    padding: 12px;
   }
 
   .metric-value {
-    font-size: 1.6rem;
+    font-size: 1.375rem;
   }
 
-  .fulfillment-metric-card,
-  .customer-metric-card,
-  .financial-metric-card,
-  .last7days-total-card {
-    padding: 12px;
-    min-height: 70px;
+  .fulfillment-metrics-grid,
+  .last7days-grid,
+  .customer-metrics-grid,
+  .financial-metrics-grid {
+    gap: 8px;
   }
 
   .daily-card {
-    min-width: 100px;
+    min-width: 90px;
     padding: 10px;
-  }
-}
-
-/* Ultra Small Mobile (below 350px) */
-@media (max-width: 350px) {
-  .orders-dashboard {
-    padding: 6px;
-  }
-
-  .dashboard-header {
-    padding: 12px;
-    margin-bottom: 12px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1rem;
-  }
-
-  .today-performance,
-  .last7days-section,
-  .customer-metrics,
-  .financial-metrics,
-  .chart-container {
-    padding: 12px;
-    margin-bottom: 12px;
-  }
-
-  .metric-card {
-    padding: 12px;
-    min-height: 75px;
-  }
-
-  .metric-value {
-    font-size: 1.5rem;
-  }
-}
-
-/* Fix for iOS Safari scrolling */
-@supports (-webkit-touch-callout: none) {
-  .orders-dashboard {
-    height: -webkit-fill-available;
   }
 }
