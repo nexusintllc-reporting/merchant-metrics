@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useNavigation,
+  useLocation,
 } from "@remix-run/react";
 import { LinksFunction } from "@remix-run/node";
 import { AppProvider } from "@shopify/polaris";
@@ -52,23 +53,43 @@ const MenuIcon = () => (
   </svg>
 );
 
-// Modern Loading Component
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+);
+
+// Generic Loading Component (keep your existing one)
 function GlobalLoadingProgress() {
+  const loadingSteps = [
+    "Loading your dashboard...",
+    "Analyzing store data...", 
+    "Processing analytics...",
+    "Generating insights...",
+    "Finalizing your view..."
+  ];
+
   return (
-    <div className="modern-loading">
-      <div className="loading-content">
-        <div className="loading-logo">
-          <div className="logo-icon">📊</div>
-          <h2>Nexus Analytics</h2>
+    <div className="global-loading-progress">
+      <div className="global-loading-header">
+        <h2>Loading Nexus Analytics</h2>
+        <p>Preparing your business intelligence dashboard...</p>
+      </div>
+      
+      <div className="global-progress-bar-container">
+        <div className="global-progress-bar">
+          <div className="global-progress-fill"></div>
         </div>
-        <div className="loading-animation">
-          <div className="pulse-dots">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
+      </div>
+
+      <div className="global-loading-steps">
+        {loadingSteps.map((step, index) => (
+          <div key={index} className="global-loading-step">
+            <div className="global-step-indicator">⟳</div>
+            <div className="global-step-text">{step}</div>
           </div>
-          <p>Loading your business intelligence...</p>
-        </div>
+        ))}
       </div>
     </div>
   );
@@ -76,6 +97,7 @@ function GlobalLoadingProgress() {
 
 export default function App() {
   const navigation = useNavigation();
+  const location = useLocation();
   
   return (
     <html lang="en">
@@ -85,54 +107,62 @@ export default function App() {
         <Meta />
         <Links />
         
-        {/* Modern Mobile-First CSS */}
+        {/* CSS for Root Header Only */}
         <style dangerouslySetInnerHTML={{
           __html: `
             [data-runtime-loading] {
               display: none !important;
             }
 
-            /* ==================== MODERN MOBILE DESIGN SYSTEM ==================== */
+            /* ==================== ROOT HEADER ONLY - MODERN STICKY DESIGN ==================== */
             
-            /* Base Reset */
-            * {
-              box-sizing: border-box;
+            /* Base body styles to accommodate sticky header */
+            body {
               margin: 0;
               padding: 0;
-            }
-
-            body {
               font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-              background: #0f172a;
-              color: #f8fafc;
-              line-height: 1.6;
             }
 
-            /* ==================== MODERN HEADER ==================== */
-            .app-header {
+            /* Main app container */
+            .app-container {
+              min-height: 100vh;
+              background: #f8fafc;
+            }
+
+            /* Fixed Sticky Header */
+            .root-header {
               position: fixed;
               top: 0;
               left: 0;
               right: 0;
               z-index: 1000;
-              background: rgba(15, 23, 42, 0.95);
+              background: rgba(15, 23, 42, 0.98);
               backdrop-filter: blur(20px);
               border-bottom: 1px solid rgba(255, 255, 255, 0.1);
               padding: 1rem;
+              transition: all 0.3s ease;
             }
 
             .header-content {
               display: flex;
               justify-content: space-between;
               align-items: center;
-              max-width: 1200px;
+              max-width: 1400px;
               margin: 0 auto;
             }
 
-            .brand {
+            /* Brand Logo - Clickable */
+            .brand-link {
               display: flex;
               align-items: center;
               gap: 0.75rem;
+              text-decoration: none;
+              cursor: pointer;
+              transition: transform 0.2s ease;
+            }
+
+            .brand-link:hover {
+              transform: translateY(-1px);
             }
 
             .logo {
@@ -164,10 +194,11 @@ export default function App() {
               margin: 0;
             }
 
+            /* Mobile Menu Button */
             .mobile-menu-btn {
               display: none;
-              background: none;
-              border: none;
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.2);
               color: #cbd5e1;
               padding: 0.5rem;
               border-radius: 8px;
@@ -176,9 +207,11 @@ export default function App() {
             }
 
             .mobile-menu-btn:hover {
-              background: rgba(255, 255, 255, 0.1);
+              background: rgba(255, 255, 255, 0.2);
+              transform: scale(1.05);
             }
 
+            /* Navigation Menu */
             .nav-menu {
               display: flex;
               gap: 0.5rem;
@@ -199,25 +232,15 @@ export default function App() {
               overflow: hidden;
             }
 
-            .nav-link::before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-              transition: left 0.5s ease;
-            }
-
-            .nav-link:hover::before {
-              left: 100%;
-            }
-
             .nav-link:not(.active) {
               background: rgba(255, 255, 255, 0.05);
               color: #cbd5e1;
               border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-link:not(.active):hover {
+              background: rgba(255, 255, 255, 0.1);
+              transform: translateY(-1px);
             }
 
             .nav-link.active {
@@ -232,89 +255,24 @@ export default function App() {
               height: 18px;
             }
 
-            /* ==================== MAIN CONTENT ==================== */
-            .app-main {
+            /* Main Content Area - Adjusted for fixed header */
+            .main-content {
               margin-top: 80px;
-              padding: 1.5rem 1rem;
               min-height: calc(100vh - 80px);
-              background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            }
-
-            /* ==================== MODERN LOADING ==================== */
-            .modern-loading {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              z-index: 10000;
-            }
-
-            .loading-content {
-              text-align: center;
-              animation: fadeInUp 0.6s ease-out;
-            }
-
-            .loading-logo {
-              margin-bottom: 2rem;
-            }
-
-            .logo-icon {
-              font-size: 3rem;
-              margin-bottom: 1rem;
-              animation: bounce 2s infinite;
-            }
-
-            .loading-logo h2 {
-              font-size: 1.5rem;
-              font-weight: 700;
-              background: linear-gradient(135deg, #6366f1, #8b5cf6);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              margin: 0;
-            }
-
-            .loading-animation p {
-              color: #94a3b8;
-              margin-top: 1rem;
-              font-size: 0.9rem;
-            }
-
-            .pulse-dots {
-              display: flex;
-              gap: 0.5rem;
-              justify-content: center;
-              margin-bottom: 1rem;
-            }
-
-            .dot {
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              background: #6366f1;
-              animation: pulse 1.4s ease-in-out infinite both;
-            }
-
-            .dot:nth-child(2) {
-              animation-delay: 0.2s;
-            }
-
-            .dot:nth-child(3) {
-              animation-delay: 0.4s;
+              padding: 2rem;
+              background: #f8fafc;
             }
 
             /* ==================== MOBILE RESPONSIVE ==================== */
             @media (max-width: 768px) {
-              .app-header {
+              .root-header {
                 padding: 0.75rem 1rem;
               }
 
               .mobile-menu-btn {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
               }
 
               .nav-menu {
@@ -334,7 +292,7 @@ export default function App() {
                 pointer-events: none;
               }
 
-              .nav-menu.open {
+              .nav-menu.mobile-open {
                 transform: translateY(0);
                 opacity: 1;
                 pointer-events: all;
@@ -346,7 +304,7 @@ export default function App() {
                 padding: 1rem;
               }
 
-              .app-main {
+              .main-content {
                 margin-top: 72px;
                 padding: 1rem;
               }
@@ -367,11 +325,11 @@ export default function App() {
             }
 
             @media (max-width: 480px) {
-              .app-header {
+              .root-header {
                 padding: 0.5rem;
               }
 
-              .brand {
+              .brand-link {
                 gap: 0.5rem;
               }
 
@@ -385,7 +343,7 @@ export default function App() {
                 font-size: 1rem;
               }
 
-              .app-main {
+              .main-content {
                 margin-top: 64px;
                 padding: 0.75rem;
               }
@@ -393,11 +351,11 @@ export default function App() {
 
             /* Tablet Styles */
             @media (min-width: 769px) and (max-width: 1024px) {
-              .app-header {
+              .root-header {
                 padding: 1rem 1.5rem;
               }
 
-              .app-main {
+              .main-content {
                 padding: 2rem 1.5rem;
               }
 
@@ -407,119 +365,177 @@ export default function App() {
               }
             }
 
-            /* ==================== ANIMATIONS ==================== */
-            @keyframes fadeInUp {
-              from {
-                opacity: 0;
-                transform: translateY(30px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            @keyframes bounce {
-              0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-              }
-              40% {
-                transform: translateY(-10px);
-              }
-              60% {
-                transform: translateY(-5px);
-              }
-            }
-
-            @keyframes pulse {
-              0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-              }
-              50% {
-                transform: scale(1.1);
-                opacity: 0.7;
-              }
-            }
-
-            /* ==================== SCREENSHOT TOOL POSITION ==================== */
-            .screenshot-tool-container {
-              position: fixed;
-              bottom: 1rem;
-              right: 1rem;
-              z-index: 9999;
-            }
-
             /* Smooth scrolling */
             html {
               scroll-behavior: smooth;
             }
 
-            /* Custom scrollbar */
-            ::-webkit-scrollbar {
-              width: 6px;
+            /* Keep your existing loading styles */
+            .global-loading-progress {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: white;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              z-index: 10000;
+              padding: 2rem;
             }
 
-            ::-webkit-scrollbar-track {
-              background: rgba(255, 255, 255, 0.1);
+            .global-loading-header h2 {
+              margin: 0 0 8px 0;
+              color: #2c3e50;
+              font-size: 28px;
+              text-align: center;
             }
 
-            ::-webkit-scrollbar-thumb {
-              background: linear-gradient(135deg, #6366f1, #8b5cf6);
-              border-radius: 3px;
+            .global-loading-header p {
+              color: #6c757d;
+              margin: 0 0 40px 0;
+              font-size: 16px;
+              text-align: center;
+            }
+
+            .global-progress-bar-container {
+              width: 100%;
+              max-width: 500px;
+              margin-bottom: 40px;
+            }
+
+            .global-progress-bar {
+              width: 100%;
+              height: 8px;
+              background: #e9ecef;
+              border-radius: 4px;
+              overflow: hidden;
+              margin-bottom: 8px;
+            }
+
+            .global-progress-fill {
+              height: 100%;
+              background: linear-gradient(90deg, #007bff, #0056b3);
+              border-radius: 4px;
+              animation: globalLoadingProgress 2s ease-in-out infinite;
+            }
+
+            @keyframes globalLoadingProgress {
+              0% {
+                transform: translateX(-100%);
+              }
+              50% {
+                transform: translateX(0%);
+              }
+              100% {
+                transform: translateX(100%);
+              }
+            }
+
+            .global-loading-steps {
+              display: flex;
+              flex-direction: column;
+              gap: 16px;
+              max-width: 500px;
+              width: 100%;
+            }
+
+            .global-loading-step {
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              padding: 12px 0;
+            }
+
+            .global-step-indicator {
+              font-size: 18px;
+              color: #007bff;
+              animation: globalSpin 1.5s linear infinite;
+            }
+
+            @keyframes globalSpin {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+
+            .global-step-text {
+              color: #495057;
+              font-size: 16px;
+              text-align: left;
+              flex: 1;
             }
           `
         }} />
       </head>
       <body>
-        {/* Show modern loading screen during navigation */}
+        {/* Show loading screen during navigation */}
         {navigation.state === 'loading' && <GlobalLoadingProgress />}
         
         {/* Only show main app when not loading */}
         {navigation.state !== 'loading' && (
           <AppProvider i18n={enTranslations}>
-            <header className="app-header">
-              <div className="header-content">
-                <div className="brand">
-                  <div className="logo">📊</div>
-                  <div className="brand-text">
-                    <h1>Nexus Analytics</h1>
-                    <p>Real-time Business Intelligence</p>
-                  </div>
+            <div className="app-container">
+              {/* Fixed Sticky Header */}
+              <header className="root-header" id="rootHeader">
+                <div className="header-content">
+                  {/* Clickable Logo that goes to home */}
+                  <a href="/app" className="brand-link">
+                    <div className="logo">📊</div>
+                    <div className="brand-text">
+                      <h1>Nexus Analytics</h1>
+                      <p>Real-time Business Intelligence</p>
+                    </div>
+                  </a>
+
+                  {/* Mobile Menu Button */}
+                  <button className="mobile-menu-btn" id="mobileMenuBtn">
+                    <MenuIcon />
+                  </button>
+
+                  {/* Navigation Menu */}
+                  <nav className="nav-menu" id="navMenu">
+                    <NavLink
+                      to="/app"
+                      end
+                      className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                      onClick={() => document.getElementById('navMenu')?.classList.remove('mobile-open')}
+                    >
+                      <AnalyticsIcon />
+                      <span>Orders Dashboard</span>
+                    </NavLink>
+
+                    <NavLink
+                      to="/products"
+                      className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                      onClick={() => document.getElementById('navMenu')?.classList.remove('mobile-open')}
+                    >
+                      <ProductIcon />
+                      <span>Products</span>
+                    </NavLink>
+                  </nav>
                 </div>
+              </header>
 
-                <button className="mobile-menu-btn" id="mobileMenuBtn">
-                  <MenuIcon />
-                </button>
+              {/* Main Content */}
+              <main className="main-content">
+                <Outlet />
+              </main>
 
-                <nav className="nav-menu" id="navMenu">
-                  <NavLink
-                    to="/app"
-                    end
-                    className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                  >
-                    <AnalyticsIcon />
-                    <span>Orders Dashboard</span>
-                  </NavLink>
-
-                  <NavLink
-                    to="/products"
-                    className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                  >
-                    <ProductIcon />
-                    <span>Products</span>
-                  </NavLink>
-                </nav>
+              {/* Floating Screenshot Button */}
+              <div style={{
+                position: "fixed",
+                bottom: "20px",
+                right: "20px",
+                zIndex: 9999
+              }}>
+                <ScreenshotTool />
               </div>
-            </header>
-
-            <main className="app-main">
-              <Outlet />
-            </main>
-
-            {/* Floating Screenshot Button */}
-            <div className="screenshot-tool-container">
-              <ScreenshotTool />
             </div>
 
             <ScrollRestoration />
@@ -531,18 +547,48 @@ export default function App() {
                 document.addEventListener('DOMContentLoaded', function() {
                   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
                   const navMenu = document.getElementById('navMenu');
+                  const rootHeader = document.getElementById('rootHeader');
                   
+                  // Mobile menu toggle
                   if (mobileMenuBtn && navMenu) {
-                    mobileMenuBtn.addEventListener('click', function() {
-                      navMenu.classList.toggle('open');
+                    mobileMenuBtn.addEventListener('click', function(e) {
+                      e.stopPropagation();
+                      navMenu.classList.toggle('mobile-open');
+                      
+                      // Toggle menu icon
+                      const menuIcon = mobileMenuBtn.querySelector('svg');
+                      if (navMenu.classList.contains('mobile-open')) {
+                        menuIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+                      } else {
+                        menuIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+                      }
                     });
                     
                     // Close menu when clicking outside
                     document.addEventListener('click', function(event) {
-                      if (!event.target.closest('.app-header')) {
-                        navMenu.classList.remove('open');
+                      if (!event.target.closest('.root-header')) {
+                        navMenu.classList.remove('mobile-open');
+                        const menuIcon = mobileMenuBtn.querySelector('svg');
+                        menuIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
                       }
                     });
+                  }
+
+                  // Ensure header stays fixed and doesn't reload
+                  if (rootHeader) {
+                    rootHeader.style.position = 'fixed';
+                    rootHeader.style.top = '0';
+                    rootHeader.style.left = '0';
+                    rootHeader.style.right = '0';
+                    rootHeader.style.zIndex = '1000';
+                  }
+                });
+
+                // Prevent any layout shifts
+                window.addEventListener('load', function() {
+                  const header = document.getElementById('rootHeader');
+                  if (header) {
+                    document.body.style.paddingTop = header.offsetHeight + 'px';
                   }
                 });
               `
