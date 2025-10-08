@@ -2040,185 +2040,587 @@
 
 
 
+/* ==================== MOBILE REDESIGN - MODERN APPROACH ==================== */
 
-
-
-/* ==================== MOBILE & SMALL DEVICES (max-width: 767px) ==================== */
-@media (max-width: 767px) {
+/* Tablets & Mobile (1024px and below) */
+@media (max-width: 1024px) {
   .orders-dashboard {
-    padding: 12px 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
   }
 
-  /* Dashboard header */
   .dashboard-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    margin: 0 0 20px 0;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 1rem 1rem;
-    margin: -1rem -1rem 1rem -1rem;
+    gap: 15px;
   }
 
   .dashboard-header h1 {
-    font-size: 1.25rem;
-    line-height: 1.3;
-    text-align: left;
+    font-size: 1.5rem;
+    color: #1a202c;
+    text-align: center;
+    margin: 0;
   }
 
   .print-button {
-    font-size: 13px;
-    padding: 6px 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    font-weight: 600;
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   }
 
-  /* Primary Metrics Grid */
+  /* ==================== TODAY'S PERFORMANCE REDESIGN ==================== */
+  .today-performance {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .today-performance h2 {
+    font-size: 1.3rem;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding: 0;
+    border: none;
+    position: relative;
+  }
+
+  .today-performance h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 2px;
+  }
+
+  /* Primary Metrics - Card Stack Design */
   .primary-metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
   .metric-card {
+    background: linear-gradient(135deg, #ffffff, #f7fafc);
+    border: none;
+    border-radius: 16px;
     padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 6px solid;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .metric-card:hover::before {
+    opacity: 1;
+  }
+
+  .metric-card.orders {
+    border-left-color: #4299e1;
+    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  }
+
+  .metric-card.revenue {
+    border-left-color: #48bb78;
+    background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+  }
+
+  .metric-card.items {
+    border-left-color: #9f7aea;
+    background: linear-gradient(135deg, #faf5ff, #e9d8fd);
   }
 
   .metric-value {
     font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    line-height: 1;
   }
+
+  .metric-card.orders .metric-value { color: #2b6cb0; }
+  .metric-card.revenue .metric-value { color: #276749; }
+  .metric-card.items .metric-value { color: #6b46c1; }
 
   .metric-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  /* Fulfillment Metrics */
+  .metric-change {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .metric-change.positive {
+    color: #276749;
+    border: 1px solid #c6f6d5;
+  }
+
+  .metric-change.negative {
+    color: #c53030;
+    border: 1px solid #fed7d7;
+  }
+
+  /* Fulfillment Metrics - Compact Grid */
   .fulfillment-metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
   }
 
   .fulfillment-metric-card {
-    padding: 18px;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-top: 4px solid;
+  }
+
+  .fulfillment-metric-card.today-fulfilled {
+    border-top-color: #48bb78;
+    background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+  }
+
+  .fulfillment-metric-card.today-unfulfilled {
+    border-top-color: #ed8936;
+    background: linear-gradient(135deg, #fffaf0, #fed7aa);
+  }
+
+  .fulfillment-metric-card.week-fulfilled {
+    border-top-color: #4299e1;
+    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  }
+
+  .fulfillment-metric-card.week-unfulfilled {
+    border-top-color: #f56565;
+    background: linear-gradient(135deg, #fff5f5, #fed7d7);
   }
 
   .fulfillment-metric-value {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    line-height: 1;
   }
 
   .fulfillment-metric-label {
-    font-size: 0.85rem;
-  }
-
-  /* Customer Metrics */
-  .customer-metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .customer-metric-card {
-    padding: 18px 12px;
-  }
-
-  .customer-metric-value {
-    font-size: 2rem;
-  }
-
-  .customer-metric-label {
-    font-size: 0.8rem;
-  }
-
-  /* Financial Metrics */
-  .financial-metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .financial-metric-card {
-    padding: 16px 12px;
-  }
-
-  .financial-metric-value {
-    font-size: 1.4rem;
-  }
-
-  .financial-metric-label {
     font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin: 0 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
-  /* Last 7 Days Analytics */
+  .fulfillment-metric-period {
+    font-size: 0.7rem;
+    color: #718096;
+    font-weight: 500;
+  }
+
+  /* ==================== LAST 7 DAYS REDESIGN ==================== */
+  .last7days-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .last7days-section h3 {
+    font-size: 1.2rem;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding: 0;
+    border: none;
+  }
+
   .last7days-grid {
-    display: flex;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding-bottom: 8px;
+    margin-bottom: 20px;
   }
 
   .last7days-total-card {
-    min-width: 220px;
-    flex: 0 0 auto;
-    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-left: 4px solid;
   }
 
+  .last7days-total-card:nth-child(1) { border-left-color: #4299e1; }
+  .last7days-total-card:nth-child(2) { border-left-color: #48bb78; }
+  .last7days-total-card:nth-child(3) { border-left-color: #9f7aea; }
+  .last7days-total-card:nth-child(4) { border-left-color: #ed8936; }
+
   .last7days-total-value {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    line-height: 1;
+  }
+
+  .last7days-total-label {
+    font-size: 0.75rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  /* Daily Breakdown - Horizontal Scroll */
+  .daily-breakdown {
+    margin-top: 20px;
+  }
+
+  .daily-breakdown h4 {
+    font-size: 1rem;
+    color: #2d3748;
+    margin: 0 0 15px 0;
+    text-align: center;
+    font-weight: 600;
   }
 
   .daily-cards-container {
     display: flex;
+    gap: 10px;
     overflow-x: auto;
-    gap: 12px;
+    padding: 10px 5px;
+    margin: 0 -5px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .daily-cards-container::-webkit-scrollbar {
+    display: none;
   }
 
   .daily-card {
-    min-width: 140px;
-    flex: 0 0 auto;
-    padding: 16px 12px;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    min-width: 120px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .daily-card.today {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .daily-card.today .daily-date,
+  .daily-card.today .daily-day,
+  .daily-card.today .daily-metric-label,
+  .daily-card.today .daily-metric-value {
+    color: white;
+  }
+
+  .daily-card-header {
+    margin-bottom: 12px;
+    text-align: center;
   }
 
   .daily-date {
     font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 2px 0;
   }
 
   .daily-day {
     font-size: 0.75rem;
+    color: #718096;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .daily-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .daily-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
   }
 
   .daily-metric-label {
     font-size: 0.7rem;
+    color: #718096;
+    font-weight: 500;
   }
 
   .daily-metric-value {
     font-size: 0.8rem;
+    font-weight: 700;
+    color: #2d3748;
   }
 
-  /* Charts Section */
+  /* ==================== CUSTOMER METRICS REDESIGN ==================== */
+  .customer-metrics {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-metrics h3 {
+    font-size: 1.2rem;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding: 0;
+    border: none;
+  }
+
+  .customer-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .customer-metric-card {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-top: 4px solid;
+  }
+
+  .customer-metric-card.total-customers { border-top-color: #4299e1; }
+  .customer-metric-card.new-customers { border-top-color: #ed8936; }
+  .customer-metric-card.repeat-customers { border-top-color: #48bb78; }
+  .customer-metric-card.loyalty-rate { border-top-color: #9f7aea; }
+
+  .customer-metric-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    line-height: 1;
+  }
+
+  .customer-metric-label {
+    font-size: 0.75rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  /* ==================== FINANCIAL METRICS REDESIGN ==================== */
+  .financial-metrics {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .financial-metrics h3 {
+    font-size: 1.2rem;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding: 0;
+    border: none;
+  }
+
+  .financial-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .financial-metric-card {
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-left: 4px solid;
+  }
+
+  .financial-metric-card.discounts { border-left-color: #ed8936; }
+  .financial-metric-card.shipping { border-left-color: #4299e1; }
+  .financial-metric-card.taxes { border-left-color: #48bb78; }
+  .financial-metric-card.returns { border-left-color: #f56565; }
+  .financial-metric-card.net-revenue { 
+    border-left-color: #9f7aea;
+    background: linear-gradient(135deg, #faf5ff, #e9d8fd);
+  }
+
+  .financial-metric-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0 0 4px 0;
+    line-height: 1;
+  }
+
+  .financial-metric-label {
+    font-size: 0.7rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 2px 0;
+  }
+
+  .financial-metric-rate {
+    font-size: 0.65rem;
+    color: #a0aec0;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* ==================== CHARTS REDESIGN ==================== */
+  .charts-section {
+    margin: 20px 0;
+  }
+
+  .charts-section h2 {
+    font-size: 1.3rem;
+    color: #2d3748;
+    text-align: center;
+    margin: 0 0 20px 0;
+  }
+
   .charts-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   .chart-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: none;
     min-height: 200px;
+  }
+
+  /* Touch Interactions */
+  @media (hover: none) and (pointer: coarse) {
+    .metric-card:active,
+    .customer-metric-card:active,
+    .financial-metric-card:active,
+    .daily-card:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+/* Small Mobile Optimizations (below 400px) */
+@media (max-width: 400px) {
+  .orders-dashboard {
+    padding: 8px;
+  }
+
+  .dashboard-header,
+  .today-performance,
+  .last7days-section,
+  .customer-metrics,
+  .financial-metrics,
+  .chart-container {
+    padding: 15px;
+  }
+
+  .metric-card {
+    padding: 15px;
+  }
+
+  .metric-value {
+    font-size: 1.8rem;
+  }
+
+  .fulfillment-metric-card,
+  .customer-metric-card,
+  .financial-metric-card,
+  .last7days-total-card {
     padding: 12px;
   }
 
-  .chart-title {
-    font-size: 0.95rem;
-  }
-
-  /* Mini Stats */
-  .mini-stats {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .mini-stat-value {
-    font-size: 1rem;
-  }
-
-  .mini-stat-label {
-    font-size: 0.65rem;
-  }
-
-  /* Footer */
-  .app-footer {
-    padding: 1rem;
+  .daily-card {
+    min-width: 110px;
+    padding: 12px;
   }
 }
