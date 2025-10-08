@@ -2039,619 +2039,321 @@
 
 
 
-/* ==================== MOBILE REDESIGN - PROFESSIONAL STATIC LAYOUT ==================== */
+/* ==================== MOBILE HEADER REDESIGN - MODERN & CLEAN ==================== */
 
 /* Tablets & Mobile (1024px and below) */
 @media (max-width: 1024px) {
   .orders-dashboard {
-    padding: 16px;
-    background: #f8fafc;
+    padding: 0;
+    background: #ffffff;
     min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  /* ==================== HEADER - PROFESSIONAL & COMPACT ==================== */
+  /* ==================== COMPLETELY NEW HEADER DESIGN ==================== */
   .dashboard-header {
-    background: #ffffff;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0;
     margin: 0 0 20px 0;
-    padding: 16px 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px 16px;
+    border: none;
+    box-shadow: 0 2px 20px rgba(102, 126, 234, 0.3);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
     position: relative;
+    overflow: hidden;
   }
 
-  .dashboard-header h1 {
-    font-size: 1.25rem;
-    color: #1e293b;
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-  }
-
-  .print-button {
-    background: #ffffff;
-    border: 1.5px solid #3b82f6;
-    border-radius: 8px;
-    padding: 8px 16px;
-    color: #3b82f6;
-    font-weight: 600;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: none;
-    transition: all 0.2s ease;
-  }
-
-  .print-button:hover {
-    background: #3b82f6;
-    color: #ffffff;
-    transform: none;
-  }
-
-  .print-button svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  /* ==================== TODAY'S PERFORMANCE - CLEAN CARD DESIGN ==================== */
-  .today-performance {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .today-performance h2 {
-    font-size: 1.1rem;
-    color: #1e293b;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-
-  /* Primary Metrics - Clean Grid */
-  .primary-metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    transition: all 0.2s ease;
-    position: relative;
-  }
-
-  .metric-card::before {
+  /* Background pattern effect */
+  .dashboard-header::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    border-radius: 8px 8px 0 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
   }
 
-  .metric-card.orders::before { background: #3b82f6; }
-  .metric-card.revenue::before { background: #10b981; }
-  .metric-card.items::before { background: #8b5cf6; }
-
-  .metric-card:hover {
-    border-color: #cbd5e1;
-    transform: none;
+  /* Header content wrapper */
+  .dashboard-header > * {
+    position: relative;
+    z-index: 2;
   }
 
-  .metric-value {
+  /* Main title with icon */
+  .dashboard-header h1 {
     font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0;
     font-weight: 700;
-    margin: 0 0 4px 0;
-    line-height: 1;
-  }
-
-  .metric-card.orders .metric-value { color: #1d4ed8; }
-  .metric-card.revenue .metric-value { color: #047857; }
-  .metric-card.items .metric-value { color: #7c3aed; }
-
-  .metric-label {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin: 0 0 8px 0;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .metric-change {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-flex;
+    letter-spacing: -0.02em;
+    display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .metric-change.positive {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+  /* Dashboard icon */
+  .dashboard-header h1::before {
+    content: '📊';
+    font-size: 1.75rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 
-  .metric-change.negative {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-  }
-
-  .metric-change svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* Fulfillment Metrics - Compact Status Grid */
-  .fulfillment-metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 20px 0;
-    padding: 16px;
-    background: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-  }
-
-  .fulfillment-metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 12px;
-    text-align: center;
-    transition: all 0.2s ease;
-  }
-
-  .fulfillment-metric-card:hover {
-    border-color: #cbd5e1;
-  }
-
-  .fulfillment-metric-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0 0 4px 0;
-    line-height: 1;
-  }
-
-  .fulfillment-metric-card.today-fulfilled .fulfillment-metric-value { color: #047857; }
-  .fulfillment-metric-card.today-unfulfilled .fulfillment-metric-value { color: #d97706; }
-  .fulfillment-metric-card.week-fulfilled .fulfillment-metric-value { color: #0369a1; }
-  .fulfillment-metric-card.week-unfulfilled .fulfillment-metric-value { color: #dc2626; }
-
-  .fulfillment-metric-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #475569;
-    margin: 0 0 2px 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .fulfillment-metric-period {
-    font-size: 0.65rem;
-    color: #94a3b8;
-    font-weight: 500;
-  }
-
-  /* ==================== LAST 7 DAYS - CLEAN DATA GRID ==================== */
-  .last7days-section {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .last7days-section h3 {
-    font-size: 1.1rem;
-    color: #1e293b;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-
-  .last7days-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .last7days-total-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    transition: all 0.2s ease;
-  }
-
-  .last7days-total-card:hover {
-    border-color: #cbd5e1;
-  }
-
-  .last7days-total-value {
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    line-height: 1;
-  }
-
-  .last7days-total-card:nth-child(1) .last7days-total-value { color: #0369a1; }
-  .last7days-total-card:nth-child(2) .last7days-total-value { color: #047857; }
-  .last7days-total-card:nth-child(3) .last7days-total-value { color: #7c3aed; }
-  .last7days-total-card:nth-child(4) .last7days-total-value { color: #d97706; }
-
-  .last7days-total-label {
-    font-size: 0.75rem;
-    color: #64748b;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-
-  /* Daily Breakdown - Horizontal Scroll Cards */
-  .daily-breakdown h4 {
-    font-size: 0.9rem;
-    color: #374151;
-    margin: 0 0 16px 0;
-    font-weight: 600;
-  }
-
-  .daily-cards-container {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 8px 4px;
-    margin: 0 -4px;
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
-  }
-
-  .daily-cards-container::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .daily-cards-container::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 2px;
-  }
-
-  .daily-cards-container::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 2px;
-  }
-
-  .daily-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px;
-    min-width: 100px;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
-  }
-
-  .daily-card.today {
-    background: #1d4ed8;
-    border-color: #1d4ed8;
-    color: #ffffff;
-  }
-
-  .daily-card.today .daily-date,
-  .daily-card.today .daily-day,
-  .daily-card.today .daily-metric-label,
-  .daily-card.today .daily-metric-value {
-    color: #ffffff;
-  }
-
-  .daily-card:hover {
-    border-color: #cbd5e1;
-  }
-
-  .daily-card-header {
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .daily-date {
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin: 0 0 2px 0;
-  }
-
-  .daily-day {
-    font-size: 0.7rem;
-    color: #64748b;
-    margin: 0;
-    font-weight: 500;
-  }
-
-  .daily-metrics {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .daily-metric {
+  /* Header actions row */
+  .dashboard-header .header-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2px 0;
+    gap: 12px;
   }
 
-  .daily-metric-label {
-    font-size: 0.65rem;
-    color: #64748b;
+  /* Date display */
+  .header-date {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: #ffffff;
+    font-size: 0.85rem;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
   }
 
-  .daily-metric-value {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #1e293b;
+  .header-date::before {
+    content: '📅';
+    font-size: 1rem;
   }
 
-  /* ==================== CUSTOMER METRICS - CLEAN STATS ==================== */
-  .customer-metrics {
-    background: #ffffff;
+  /* Print button redesign */
+  .print-button {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
     border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 10px 16px;
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
   }
 
-  .customer-metrics h3 {
+  .print-button::before {
+    content: '🖨️';
     font-size: 1.1rem;
-    color: #1e293b;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9;
-    font-weight: 600;
-    letter-spacing: -0.025em;
   }
 
-  .customer-metrics-grid {
+  .print-button:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .print-button:active {
+    transform: translateY(0);
+  }
+
+  /* Stats summary bar */
+  .header-stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
   }
 
-  .customer-metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
+  .stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px;
     text-align: center;
-    transition: all 0.2s ease;
+    color: #ffffff;
   }
 
-  .customer-metric-card:hover {
-    border-color: #cbd5e1;
-  }
-
-  .customer-metric-value {
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    line-height: 1;
-  }
-
-  .customer-metric-card.total-customers .customer-metric-value { color: #0369a1; }
-  .customer-metric-card.new-customers .customer-metric-value { color: #d97706; }
-  .customer-metric-card.repeat-customers .customer-metric-value { color: #047857; }
-  .customer-metric-card.loyalty-rate .customer-metric-value { color: #7c3aed; }
-
-  .customer-metric-label {
-    font-size: 0.75rem;
-    color: #64748b;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-
-  /* ==================== FINANCIAL METRICS - COMPACT GRID ==================== */
-  .financial-metrics {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .financial-metrics h3 {
-    font-size: 1.1rem;
-    color: #1e293b;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-
-  .financial-metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .financial-metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 14px;
-    text-align: center;
-    transition: all 0.2s ease;
-  }
-
-  .financial-metric-card:hover {
-    border-color: #cbd5e1;
-  }
-
-  .financial-metric-card.net-revenue {
-    background: #f8fafc;
-    border-color: #e2e8f0;
-  }
-
-  .financial-metric-value {
+  .stat-value {
     font-size: 1.125rem;
     font-weight: 700;
-    margin: 0 0 4px 0;
+    margin: 0 0 2px 0;
     line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
-  .financial-metric-card.discounts .financial-metric-value { color: #d97706; }
-  .financial-metric-card.shipping .financial-metric-value { color: #0369a1; }
-  .financial-metric-card.taxes .financial-metric-value { color: #047857; }
-  .financial-metric-card.returns .financial-metric-value { color: #dc2626; }
-  .financial-metric-card.net-revenue .financial-metric-value { color: #7c3aed; }
-
-  .financial-metric-label {
+  .stat-label {
     font-size: 0.7rem;
-    color: #64748b;
-    font-weight: 600;
+    opacity: 0.9;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin: 0 0 2px 0;
-  }
-
-  .financial-metric-rate {
-    font-size: 0.65rem;
-    color: #94a3b8;
-    font-weight: 500;
     margin: 0;
   }
 
-  /* ==================== CHARTS - CLEAN CONTAINERS ==================== */
-  .charts-section {
-    margin: 20px 0;
+  /* Alternative Header Design - Uncomment to use */
+  /*
+  .dashboard-header {
+    background: #1a202c;
+    border-radius: 0 0 20px 20px;
+    margin: 0 0 24px 0;
+    padding: 24px 20px;
+  }
+  */
+}
+
+/* Tablet specific header (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .dashboard-header {
+    padding: 24px 32px;
+    margin-bottom: 24px;
   }
 
-  .charts-section h2 {
-    font-size: 1.1rem;
-    color: #1e293b;
-    margin: 0 0 20px 0;
-    font-weight: 600;
-    letter-spacing: -0.025em;
+  .dashboard-header h1 {
+    font-size: 1.75rem;
   }
 
-  .charts-grid {
-    display: flex;
-    flex-direction: column;
+  .header-actions {
     gap: 16px;
   }
 
-  .chart-container {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    min-height: 200px;
-  }
-
-  .chart-header {
-    margin-bottom: 12px;
-  }
-
-  .chart-title {
+  .header-date {
     font-size: 0.9rem;
-    color: #374151;
-    font-weight: 600;
+    padding: 10px 20px;
   }
 
-  .chart-legend {
-    font-size: 0.7rem;
-    gap: 8px;
+  .print-button {
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 
-  .legend-item {
-    gap: 4px;
+  .header-stats {
+    gap: 12px;
+    margin-top: 12px;
   }
 
-  .legend-color {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-/* Small Mobile Optimizations (below 400px) */
-@media (max-width: 400px) {
-  .orders-dashboard {
+  .stat-item {
     padding: 12px;
   }
 
+  .stat-value {
+    font-size: 1.25rem;
+  }
+}
+
+/* Mobile specific header (below 768px) */
+@media (max-width: 767px) {
   .dashboard-header {
-    padding: 14px 16px;
+    padding: 20px 16px;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.375rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header-date {
+    order: 2;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .print-button {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+}
+
+/* Small mobile optimization (below 400px) */
+@media (max-width: 400px) {
+  .dashboard-header {
+    padding: 16px 12px;
     margin-bottom: 16px;
   }
 
   .dashboard-header h1 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    gap: 8px;
+  }
+
+  .dashboard-header h1::before {
+    font-size: 1.5rem;
+  }
+
+  .header-date {
+    font-size: 0.8rem;
+    padding: 8px 12px;
   }
 
   .print-button {
-    padding: 6px 12px;
-    font-size: 0.75rem;
+    padding: 10px 14px;
+    font-size: 0.8rem;
   }
 
-  .today-performance,
-  .last7days-section,
-  .customer-metrics,
-  .financial-metrics {
-    padding: 16px;
-    margin-bottom: 16px;
+  .stat-item {
+    padding: 8px;
   }
 
-  .primary-metrics-grid {
-    gap: 8px;
+  .stat-value {
+    font-size: 1rem;
   }
 
-  .metric-card {
-    padding: 12px;
-  }
-
-  .metric-value {
-    font-size: 1.375rem;
-  }
-
-  .fulfillment-metrics-grid,
-  .last7days-grid,
-  .customer-metrics-grid,
-  .financial-metrics-grid {
-    gap: 8px;
-  }
-
-  .daily-card {
-    min-width: 90px;
-    padding: 10px;
+  .stat-label {
+    font-size: 0.65rem;
   }
 }
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  @media (max-width: 1024px) {
+    .orders-dashboard {
+      background: #0f1419;
+    }
+    
+    .dashboard-header {
+      background: linear-gradient(135deg, #4c51bf 0%, #7e22ce 100%);
+    }
+  }
+}
+
+/* Loading state for header */
+.dashboard-header.loading .stat-value {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  min-height: 20px;
+}
+
+@keyframes loading {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+
+
+
+
+
