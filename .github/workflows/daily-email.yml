@@ -1,20 +1,16 @@
 ﻿name: Daily Email Scheduler
 
+# Run every day at 9:00 AM UTC and allow manual trigger
 on:
+  workflow_dispatch:   # Manual trigger
   schedule:
-    # Runs every day at 9:00 AM UTC
-    - cron: '0 9 * * *'
-  workflow_dispatch: # Allow manual trigger from GitHub Actions UI
+    - cron: '0 9 * * *'  # Daily at 9:00 AM UTC
 
 jobs:
   trigger-daily-reports:
     runs-on: ubuntu-latest
-    name: Trigger Daily Email Reports
     steps:
       - name: Trigger Reports
         run: |
           echo "🕒 Triggering daily email reports..."
-          curl -X GET 
-            "${{ secrets.APP_URL }}/api/cron" 
-            -H "Content-Type: application/json" 
-            --max-time 300
+          curl -X GET "${{ secrets.APP_URL }}/api/cron" -H "Content-Type: application/json" --max-time 300
