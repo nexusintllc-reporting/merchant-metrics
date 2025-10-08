@@ -2331,5 +2331,7 @@
     font-size: 2.1rem;
   }
   
- 
+  .fulfillment-metric-value {
+    font-size: 1.6rem;
+  }
 }
