@@ -13,6 +13,7 @@ import { AppProvider } from "@shopify/polaris";
 import enTranslations from "@shopify/polaris/locales/en.json";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 import ScreenshotTool from "./components/ScreenshotTool";
+import { useEffect, useRef } from "react";
 
 export const links: LinksFunction = () => [
   { 
@@ -60,7 +61,7 @@ const CloseIcon = () => (
   </svg>
 );
 
-// Generic Loading Component (keep your existing one)
+// Generic Loading Component with smaller mobile text
 function GlobalLoadingProgress() {
   const loadingSteps = [
     "Loading your dashboard...",
@@ -98,7 +99,87 @@ function GlobalLoadingProgress() {
 export default function App() {
   const navigation = useNavigation();
   const location = useLocation();
-  
+  const navMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Close mobile menu function
+  const closeMobileMenu = () => {
+    const navMenu = document.getElementById('navMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    if (navMenu) {
+      navMenu.classList.remove('mobile-open');
+    }
+    
+    if (mobileMenuBtn) {
+      const menuIcon = mobileMenuBtn.querySelector('svg');
+      if (menuIcon) {
+        menuIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+      }
+    }
+  };
+
+  // Toggle mobile menu function
+  const toggleMobileMenu = () => {
+    const navMenu = document.getElementById('navMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    if (navMenu && mobileMenuBtn) {
+      const isOpen = navMenu.classList.contains('mobile-open');
+      
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        navMenu.classList.add('mobile-open');
+        const menuIcon = mobileMenuBtn.querySelector('svg');
+        if (menuIcon) {
+          menuIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+        }
+      }
+    }
+  };
+
+  // Initialize mobile menu functionality
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const navMenu = document.getElementById('navMenu');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      
+      if (navMenu && 
+          mobileMenuBtn && 
+          !navMenu.contains(event.target as Node) && 
+          !mobileMenuBtn.contains(event.target as Node) &&
+          navMenu.classList.contains('mobile-open')) {
+        closeMobileMenu();
+      }
+    };
+
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeMobileMenu();
+      }
+    };
+
+    // Set body padding for fixed header
+    const header = document.getElementById('rootHeader');
+    if (header) {
+      document.body.style.paddingTop = header.offsetHeight + 'px';
+    }
+
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, []);
+
+  // Close mobile menu when location changes
+  useEffect(() => {
+    closeMobileMenu();
+  }, [location.pathname]);
+
   return (
     <html lang="en">
       <head>
@@ -370,7 +451,7 @@ export default function App() {
               scroll-behavior: smooth;
             }
 
-            /* Keep your existing loading styles */
+            /* ==================== FIXED LOADING STYLES - SMALLER ON MOBILE ==================== */
             .global-loading-progress {
               position: fixed;
               top: 0;
@@ -470,6 +551,59 @@ export default function App() {
               text-align: left;
               flex: 1;
             }
+
+            /* Mobile loading text adjustments */
+            @media (max-width: 768px) {
+              .global-loading-progress {
+                padding: 1rem;
+              }
+
+              .global-loading-header h2 {
+                font-size: 22px;
+              }
+
+              .global-loading-header p {
+                font-size: 14px;
+                margin-bottom: 30px;
+              }
+
+              .global-progress-bar-container {
+                margin-bottom: 30px;
+              }
+
+              .global-loading-steps {
+                gap: 12px;
+                max-width: 100%;
+              }
+
+              .global-loading-step {
+                gap: 12px;
+                padding: 8px 0;
+              }
+
+              .global-step-indicator {
+                font-size: 16px;
+              }
+
+              .global-step-text {
+                font-size: 14px;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .global-loading-header h2 {
+                font-size: 20px;
+              }
+
+              .global-loading-header p {
+                font-size: 13px;
+                margin-bottom: 25px;
+              }
+
+              .global-step-text {
+                font-size: 13px;
+              }
+            }
           `
         }} />
       </head>
@@ -484,27 +618,32 @@ export default function App() {
               {/* Fixed Sticky Header */}
               <header className="root-header" id="rootHeader">
                 <div className="header-content">
-                  {/* Clickable Logo that goes to home */}
-                  <a href="/app" className="brand-link">
+                  {/* Clickable Logo that goes to app index */}
+                  <NavLink to="/app" className="brand-link">
                     <div className="logo">📊</div>
                     <div className="brand-text">
                       <h1>Nexus Analytics</h1>
                       <p>Real-time Business Intelligence</p>
                     </div>
-                  </a>
+                  </NavLink>
 
                   {/* Mobile Menu Button */}
-                  <button className="mobile-menu-btn" id="mobileMenuBtn">
+                  <button 
+                    className="mobile-menu-btn" 
+                    id="mobileMenuBtn"
+                    onClick={toggleMobileMenu}
+                    ref={mobileMenuBtnRef}
+                  >
                     <MenuIcon />
                   </button>
 
                   {/* Navigation Menu */}
-                  <nav className="nav-menu" id="navMenu">
+                  <nav className="nav-menu" id="navMenu" ref={navMenuRef}>
                     <NavLink
                       to="/app"
                       end
                       className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                      onClick={() => document.getElementById('navMenu')?.classList.remove('mobile-open')}
+                      onClick={closeMobileMenu}
                     >
                       <AnalyticsIcon />
                       <span>Orders Dashboard</span>
@@ -513,7 +652,7 @@ export default function App() {
                     <NavLink
                       to="/products"
                       className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                      onClick={() => document.getElementById('navMenu')?.classList.remove('mobile-open')}
+                      onClick={closeMobileMenu}
                     >
                       <ProductIcon />
                       <span>Products</span>
@@ -540,59 +679,6 @@ export default function App() {
 
             <ScrollRestoration />
             <Scripts />
-
-            {/* Mobile Menu Script */}
-            <script dangerouslySetInnerHTML={{
-              __html: `
-                document.addEventListener('DOMContentLoaded', function() {
-                  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                  const navMenu = document.getElementById('navMenu');
-                  const rootHeader = document.getElementById('rootHeader');
-                  
-                  // Mobile menu toggle
-                  if (mobileMenuBtn && navMenu) {
-                    mobileMenuBtn.addEventListener('click', function(e) {
-                      e.stopPropagation();
-                      navMenu.classList.toggle('mobile-open');
-                      
-                      // Toggle menu icon
-                      const menuIcon = mobileMenuBtn.querySelector('svg');
-                      if (navMenu.classList.contains('mobile-open')) {
-                        menuIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
-                      } else {
-                        menuIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
-                      }
-                    });
-                    
-                    // Close menu when clicking outside
-                    document.addEventListener('click', function(event) {
-                      if (!event.target.closest('.root-header')) {
-                        navMenu.classList.remove('mobile-open');
-                        const menuIcon = mobileMenuBtn.querySelector('svg');
-                        menuIcon.innerHTML = '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
-                      }
-                    });
-                  }
-
-                  // Ensure header stays fixed and doesn't reload
-                  if (rootHeader) {
-                    rootHeader.style.position = 'fixed';
-                    rootHeader.style.top = '0';
-                    rootHeader.style.left = '0';
-                    rootHeader.style.right = '0';
-                    rootHeader.style.zIndex = '1000';
-                  }
-                });
-
-                // Prevent any layout shifts
-                window.addEventListener('load', function() {
-                  const header = document.getElementById('rootHeader');
-                  if (header) {
-                    document.body.style.paddingTop = header.offsetHeight + 'px';
-                  }
-                });
-              `
-            }} />
           </AppProvider>
         )}
       </body>
