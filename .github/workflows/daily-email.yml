@@ -1,16 +1,19 @@
 ﻿name: Daily Email Scheduler
 
-# Run every day at 9:00 AM UTC and allow manual trigger
 on:
-  workflow_dispatch:   # Manual trigger
   schedule:
-    - cron: '0 9 * * *'  # Daily at 9:00 AM UTC
+    # Run daily at 9:00 AM CT = 14:00 UTC
+    - cron: '0 14 * * *'
+  workflow_dispatch:
 
 jobs:
   trigger-daily-reports:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Reports
+      - name: Trigger Reports via Vercel
         run: |
           echo "🕒 Triggering daily email reports..."
-          curl -X GET "${{ secrets.APP_URL }}/api/cron" -H "Content-Type: application/json" --max-time 300
+          curl -X GET \
+            "${{ secrets.APP_URL }}/api/trigger-daily-emails?secret=${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 300
