@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
 
+import "../styles/ScreenshotTool.css";
+
 // SVG Icons for Shopify App Store compliance
 const Icons = {
   // Camera icon for screenshot button

@@ -338,9 +338,9 @@ export default function App() {
 
             /* Main Content Area - Adjusted for fixed header */
             .main-content {
-              margin-top: 80px;
+              margin-top: 10px;
               min-height: calc(100vh - 80px);
-              padding: 2rem;
+              padding: 0.7rem;
               background: #f8fafc;
             }
 
@@ -386,8 +386,8 @@ export default function App() {
               }
 
               .main-content {
-                margin-top: 72px;
-                padding: 1rem;
+                margin-top: 10px;
+                padding: 0.7rem;
               }
 
               .brand-text h1 {
@@ -425,7 +425,7 @@ export default function App() {
               }
 
               .main-content {
-                margin-top: 64px;
+                margin-top: 10px;
                 padding: 0.75rem;
               }
             }
@@ -437,7 +437,7 @@ export default function App() {
               }
 
               .main-content {
-                padding: 2rem 1.5rem;
+                padding: 0.6rem 0.4rem;
               }
 
               .nav-link {

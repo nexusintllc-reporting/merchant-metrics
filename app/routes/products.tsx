@@ -1849,7 +1849,7 @@ export default function Products() {
     <div className="products-dashboard">
       {/* Dashboard Header */}
       <div className="dashboard-header">
-        <h1>Products & Collections Dashboard</h1>
+        <h1>Products Dashboard</h1>
         <div className="header-controls">
           <a 
             href={`https://${data.shop}/admin/products`} 
@@ -1860,14 +1860,32 @@ export default function Products() {
             <Icon.Manage />
             Manage Products
           </a>
-          <button 
-            className="print-button" 
-            onClick={() => window.print()}
-            disabled={isExporting}
-          >
-            <Icon.Print />
-            Print Report
-          </button>
+      <button 
+  className="print-report-btn"
+  onClick={() => {
+    console.log('🖨️ NEW PRINT BUTTON CLICKED');
+    window.print();
+  }}
+  style={{
+    background: '#2563eb',
+    color: 'white',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '600',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.2s ease'
+  }}
+>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+  </svg>
+  Print Report
+</button>
         </div>
       </div>
 

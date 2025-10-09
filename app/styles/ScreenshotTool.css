@@ -1,0 +1,24 @@
+/* ==================== SCREENSHOT TOOL MOBILE HIDE ==================== */
+
+
+/* Show only on desktop */
+@media (min-width: 769px) {
+  .screenshot-tool-container {
+    display: block !important;
+  }
+}
+
+/* Hide screenshot tool on mobile */
+@media (max-width: 768px) {
+  [data-screenshot-ignore] {
+    display: none !important;
+  }
+}
+
+
+/* Hide screenshot tool during print */
+@media print {
+  [data-screenshot-ignore] {
+    display: none !important;
+  }
+}
