@@ -683,6 +683,57 @@
 //     }).format(amount);
 //   };
 
+//   // Tooltip Component
+//   const Tooltip = ({ text, children }: { text: string; children: React.ReactNode }) => (
+//     <span className="tooltip" data-tooltip={text}>
+//       {children}
+//     </span>
+//   );
+
+//   // Trend Indicator Component
+//   const TrendIndicator = ({ value, previousValue }: { value: number; previousValue: number }) => {
+//     const trend = value - previousValue;
+//     const trendPercent = previousValue > 0 ? (trend / previousValue) * 100 : 0;
+    
+//     return (
+//       <div className={`trend-indicator ${trend > 0 ? 'trend-up' : trend < 0 ? 'trend-down' : 'trend-neutral'}`}>
+//         {trend > 0 ? '↗' : trend < 0 ? '↘' : '→'}
+//         {Math.abs(trendPercent).toFixed(1)}%
+//       </div>
+//     );
+//   };
+
+//   // Quality Badge Component
+//   const QualityBadge = ({ score }: { score: number }) => {
+//     let qualityClass = '';
+//     let label = '';
+    
+//     if (score >= 90) {
+//       qualityClass = 'quality-excellent';
+//       label = 'Excellent';
+//     } else if (score >= 75) {
+//       qualityClass = 'quality-good';
+//       label = 'Good';
+//     } else if (score >= 60) {
+//       qualityClass = 'quality-fair';
+//       label = 'Fair';
+//     } else {
+//       qualityClass = 'quality-poor';
+//       label = 'Needs Work';
+//     }
+    
+//     return (
+//       <span className={`quality-badge ${qualityClass}`}>
+//         {label}
+//       </span>
+//     );
+//   };
+
+
+
+
+
+
 //    // Calculate real percentages for pie chart from ALL products
 //   const activePercentage = data.enhancedMetrics.statusBreakdown.active;
 //   const draftPercentage = data.enhancedMetrics.statusBreakdown.draft;
@@ -693,7 +744,7 @@
 //     <div className="products-dashboard">
 //       {/* Dashboard Header */}
 //       <div className="dashboard-header">
-//         <h1>Products & Collections Dashboard</h1>
+//         <h1>Products Dashboard</h1>
 //         <div className="header-controls">
 //           <a 
 //             href={`https://${data.shop}/admin/products`} 
@@ -704,14 +755,32 @@
 //             <Icon.Manage />
 //             Manage Products
 //           </a>
-//           <button 
-//             className="print-button" 
-//             onClick={() => window.print()}
-//             disabled={isExporting}
-//           >
-//             <Icon.Print />
-//             Print Report
-//           </button>
+//       <button 
+//   className="print-report-btn"
+//   onClick={() => {
+//     console.log('🖨️ NEW PRINT BUTTON CLICKED');
+//     window.print();
+//   }}
+//   style={{
+//     background: '#2563eb',
+//     color: 'white',
+//     border: 'none',
+//     padding: '10px 16px',
+//     borderRadius: '8px',
+//     cursor: 'pointer',
+//     fontSize: '14px',
+//     fontWeight: '600',
+//     display: 'flex',
+//     alignItems: 'center',
+//     gap: '8px',
+//     transition: 'all 0.2s ease'
+//   }}
+// >
+//   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+//     <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+//   </svg>
+//   Print Report
+// </button>
 //         </div>
 //       </div>
 
@@ -739,7 +808,25 @@
 // </div>
 //       </div>
 
-//       {/* Products Overview Section */}
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+//           {/* Products Overview Section */}
 //       <div className="products-overview">
 //         <h2>📦 Products Overview</h2>
 //         <div className="primary-metrics-grid">
@@ -766,9 +853,11 @@
 //       </div>
 
 //       {/* Charts Section */}
+//             {/* Charts Section */}
 //       <div className="charts-section">
 //         <h2>📊 Visual Analytics</h2>
 //         <div className="charts-grid">
+//           {/* Product Status Distribution */}
 //           <div className="chart-container">
 //             <h3>Product Status Distribution</h3>
 //             <div className="chart-placeholder pie-chart">
@@ -790,15 +879,15 @@
 //                 </div>
 //               </div>
 //               <div className="chart-legend">
-//                 <div className="legend-item">
+//                 <div className="legend-item tooltip" data-tooltip={`${formatNumber(activePercentage)} active products (${formatPercentage(data.chartData.statusData.activePercentage)}% of total)`}>
 //                   <span className="legend-color active"></span>
 //                   <span>Active: {formatNumber(activePercentage)} ({formatPercentage(data.chartData.statusData.activePercentage)}%)</span>
 //                 </div>
-//                 <div className="legend-item">
+//                 <div className="legend-item tooltip" data-tooltip={`${formatNumber(draftPercentage)} draft products (${formatPercentage(data.chartData.statusData.draftPercentage)}% of total)`}>
 //                   <span className="legend-color draft"></span>
 //                   <span>Draft: {formatNumber(draftPercentage)} ({formatPercentage(data.chartData.statusData.draftPercentage)}%)</span>
 //                 </div>
-//                 <div className="legend-item">
+//                 <div className="legend-item tooltip" data-tooltip={`${formatNumber(archivedPercentage)} archived products (${formatPercentage(data.chartData.statusData.archivedPercentage)}% of total)`}>
 //                   <span className="legend-color archived"></span>
 //                   <span>Archived: {formatNumber(archivedPercentage)} ({formatPercentage(data.chartData.statusData.archivedPercentage)}%)</span>
 //                 </div>
@@ -806,6 +895,8 @@
 //             </div>
 //           </div>
 
+//           {/* Top Collections */}
+//                 {/* Top Collections */}
 //           <div className="chart-container">
 //             <h3>Top Collections</h3>
 //             <div className="chart-placeholder bar-chart">
@@ -813,9 +904,11 @@
 //                 <div className="bar-chart-visual">
 //                   {data.chartData.topCollections.slice(0, 5).map((collection: any, index: number) => {
 //                     const maxCount = Math.max(...data.chartData.topCollections.map((c: any) => c.productCount));
-//                     const heightPercentage = maxCount > 0 ? (collection.productCount / maxCount) * 100 : 0;
+//                     // Ensure minimum height for visibility, even for small numbers
+//                     const heightPercentage = maxCount > 0 ? 
+//                       Math.max(10, (collection.productCount / maxCount) * 100) : 10;
 //                     return (
-//                       <div key={collection.node.id} className="bar-container">
+//                       <div key={collection.node.id} className="bar-container tooltip" data-tooltip={`${collection.node.title}: ${collection.productCount} products`}>
 //                         <div 
 //                           className="bar" 
 //                           style={{ height: `${heightPercentage}%` }}
@@ -827,22 +920,51 @@
 //                   })}
 //                 </div>
 //               </div>
+//               <div className="chart-summary tooltip" data-tooltip={`Largest collection: ${data.collectionStats.largestCollection?.node.title || 'None'} with ${data.collectionStats.largestCollection?.productCount || 0} products`}>
+//                 Total collections: {formatNumber(data.totalCollections)}
+//               </div>
 //             </div>
 //           </div>
 
+//           {/* Monthly Product Growth */}
+
+
+
+          
+//                     {/* Monthly Product Growth */}
 //           <div className="chart-container">
 //             <h3>Monthly Product Growth</h3>
 //             <div className="chart-placeholder line-chart">
 //               <div className="chart-visual">
 //                 <div className="line-chart-visual">
 //                   <div className="line-graph">
+//                     {/* Connect the dots with a line */}
+//                     <svg className="line-path" viewBox="0 0 100 100" preserveAspectRatio="none">
+//                       <path 
+//                         className="line" 
+//                         d={data.chartData.monthlyData.labels.map((label: string, index: number) => {
+//                           const maxData = Math.max(...data.chartData.monthlyData.data);
+//                           const heightPercentage = maxData > 0 ? (data.chartData.monthlyData.data[index] / maxData) * 100 : 0;
+//                           const x = (index / (data.chartData.monthlyData.labels.length - 1)) * 100;
+//                           const y = 100 - heightPercentage;
+//                           return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+//                         }).join(' ')}
+//                         fill="none"
+//                         stroke="#6f42c1"
+//                         strokeWidth="2"
+//                       />
+//                     </svg>
+                    
+//                     {/* Data points */}
 //                     {data.chartData.monthlyData.labels.map((label: string, index: number) => {
 //                       const maxData = Math.max(...data.chartData.monthlyData.data);
 //                       const heightPercentage = maxData > 0 ? (data.chartData.monthlyData.data[index] / maxData) * 100 : 0;
+//                       const value = data.chartData.monthlyData.data[index];
 //                       return (
 //                         <div 
 //                           key={label} 
-//                           className="data-point" 
+//                           className="data-point tooltip" 
+//                           data-tooltip={`${label}: ${value} new products`}
 //                           style={{ 
 //                             left: `${(index / (data.chartData.monthlyData.labels.length - 1)) * 100}%`,
 //                             bottom: `${heightPercentage}%`
@@ -850,7 +972,6 @@
 //                         ></div>
 //                       );
 //                     })}
-//                     <div className="line"></div>
 //                   </div>
 //                   <div className="x-axis">
 //                     {data.chartData.monthlyData.labels.map((label: string) => (
@@ -859,30 +980,64 @@
 //                   </div>
 //                 </div>
 //               </div>
+//               <div className="chart-summary tooltip" data-tooltip={`${data.enhancedMetrics.productTimeline.last30Days} products created in the last 30 days`}>
+//                 Recent growth: {formatNumber(data.enhancedMetrics.productTimeline.last30Days)} products
+//               </div>
 //             </div>
 //           </div>
 //         </div>
 //       </div>
 
+
+
+
+
+
+
 //       {/* Inventory Management Section */}
+//          {/* Inventory Management Section */}
 //       <div className="inventory-section">
 //         <h2>📊 Inventory Overview</h2>
 //         <div className="inventory-grid">
 //           <div className="inventory-card total-variants">
-//             <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.totalVariants)}</div>
+//             <Tooltip text="Total number of product variants across all products">
+//               <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.totalVariants)}</div>
+//             </Tooltip>
 //             <div className="inventory-label">Total Variants</div>
+//             <div className="inventory-status">
+//               <div className="status-dot healthy"></div>
+//               <span>All variants tracked</span>
+//             </div>
 //           </div>
 //           <div className="inventory-card out-of-stock">
-//             <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.outOfStock)}</div>
+//             <Tooltip text="Variants currently out of stock that need restocking">
+//               <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.outOfStock)}</div>
+//             </Tooltip>
 //             <div className="inventory-label">Out of Stock</div>
+//             <div className="inventory-status">
+//               <div className={`status-dot ${data.enhancedMetrics.inventory.outOfStock > 0 ? 'critical' : 'healthy'}`}></div>
+//               <span>{data.enhancedMetrics.inventory.outOfStock > 0 ? 'Needs attention' : 'All in stock'}</span>
+//             </div>
 //           </div>
 //           <div className="inventory-card low-stock">
-//             <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.lowStock)}</div>
+//             <Tooltip text="Variants with 5 or fewer items in stock">
+//               <div className="inventory-value">{formatNumber(data.enhancedMetrics.inventory.lowStock)}</div>
+//             </Tooltip>
 //             <div className="inventory-label">Low Stock</div>
+//             <div className="inventory-status">
+//               <div className={`status-dot ${data.enhancedMetrics.inventory.lowStock > 0 ? 'warning' : 'healthy'}`}></div>
+//               <span>{data.enhancedMetrics.inventory.lowStock > 0 ? 'Monitor closely' : 'Good levels'}</span>
+//             </div>
 //           </div>
 //           <div className="inventory-card inventory-value">
-//             <div className="inventory-value">{formatCurrency(data.enhancedMetrics.inventory.inventoryValue)}</div>
+//             <Tooltip text="Total value of all inventory at current prices">
+//               <div className="inventory-value">{formatCurrency(data.enhancedMetrics.inventory.inventoryValue)}</div>
+//             </Tooltip>
 //             <div className="inventory-label">Inventory Value</div>
+//             <div className="inventory-status">
+//               <div className="status-dot healthy"></div>
+//               <span>Total asset value</span>
+//             </div>
 //           </div>
 //         </div>
 //       </div>
@@ -927,28 +1082,41 @@
 //       </div>
 
 //       {/* SEO Insights */}
+//             {/* SEO Insights */}
 //       <div className="seo-section">
 //         <h2>🔍 SEO Insights</h2>
 //         <div className="seo-grid">
 //           <div className="seo-card">
-//             <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.missingMeta)}</div>
+//             <Tooltip text={`${data.enhancedMetrics.seoInsights.missingMeta} products have short or missing descriptions that affect SEO`}>
+//               <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.missingMeta)}</div>
+//             </Tooltip>
 //             <div className="seo-label">Missing Descriptions</div>
 //             <div className="seo-description">Products needing better descriptions</div>
+//             <QualityBadge score={100 - (data.enhancedMetrics.seoInsights.missingMeta / data.totalProducts) * 100} />
 //           </div>
 //           <div className="seo-card">
-//             <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.shortTitles)}</div>
+//             <Tooltip text={`${data.enhancedMetrics.seoInsights.shortTitles} products have titles shorter than 10 characters`}>
+//               <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.shortTitles)}</div>
+//             </Tooltip>
 //             <div className="seo-label">Short Titles</div>
 //             <div className="seo-description">Titles under 10 characters</div>
+//             <QualityBadge score={100 - (data.enhancedMetrics.seoInsights.shortTitles / data.totalProducts) * 100} />
 //           </div>
 //           <div className="seo-card">
-//             <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.missingImages)}</div>
+//             <Tooltip text={`${data.enhancedMetrics.seoInsights.missingImages} products are missing featured images`}>
+//               <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.missingImages)}</div>
+//             </Tooltip>
 //             <div className="seo-label">Missing Images</div>
 //             <div className="seo-description">Products without featured images</div>
+//             <QualityBadge score={100 - (data.enhancedMetrics.seoInsights.missingImages / data.totalProducts) * 100} />
 //           </div>
 //           <div className="seo-card score">
-//             <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.seoScore)}%</div>
+//             <Tooltip text="Overall SEO health score based on descriptions, titles, and images">
+//               <div className="seo-value">{formatNumber(data.enhancedMetrics.seoInsights.seoScore)}%</div>
+//             </Tooltip>
 //             <div className="seo-label">SEO Score</div>
 //             <div className="seo-description">Overall SEO health</div>
+//             <QualityBadge score={data.enhancedMetrics.seoInsights.seoScore} />
 //           </div>
 //         </div>
 //       </div>
@@ -1101,16 +1269,14 @@
 // }
 
 
-
-
-// ==================== IMPORTS ====================
+// ==================== 1. IMPORTS ====================
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigation, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import "../styles/products.css";
 import { useState } from 'react';
 
-// ==================== LOADING COMPONENT ====================
+// ==================== 2. LOADING COMPONENT ====================
 function LoadingProgress() {
   const loadingSteps = [
     "Scanning products...",
@@ -1145,7 +1311,7 @@ function LoadingProgress() {
   );
 }
 
-// ==================== TYPES ====================
+// ==================== 3. TYPES ====================
 interface ProductsData {
   totalProducts: number;
   activeProducts: number;
@@ -1195,9 +1361,7 @@ interface ProductsData {
   productsLoaded: number;
 }
 
-// ==================== HELPER FUNCTIONS ====================
-
-// Your original helper functions - kept exactly the same
+// ==================== 4. HELPER FUNCTIONS ====================
 async function fetchAllCollectionProducts(admin: any, collectionId: string) {
   let allProducts: any[] = [];
   let after = null;
@@ -1237,25 +1401,21 @@ async function fetchAllCollectionProducts(admin: any, collectionId: string) {
     after = pageInfo?.endCursor;
     hasMore = pageInfo?.hasNextPage;
 
-    // Safety limit
     if (allProducts.length >= 1000) break;
   }
 
   return allProducts.length;
 }
 
-// Enhanced inventory metrics function with detailed product tracking
 async function getInventoryMetrics(admin: any, allProducts: any[]) {
   let totalVariants = 0;
   let outOfStockCount = 0;
   let lowStockCount = 0;
   let totalInventoryValue = 0;
   
-  // Track specific products that need attention
   const outOfStockProducts: any[] = [];
   const lowStockProducts: any[] = [];
   
-  // Sample a subset of products for performance
   const sampleProducts = allProducts.slice(0, 50);
   
   for (const product of sampleProducts) {
@@ -1303,7 +1463,6 @@ async function getInventoryMetrics(admin: any, allProducts: any[]) {
         totalInventoryValue += quantity * price;
       });
 
-      // Track which specific products need attention
       if (productOutOfStock) {
         outOfStockProducts.push({
           title: variantsData.data?.product?.title,
@@ -1319,11 +1478,10 @@ async function getInventoryMetrics(admin: any, allProducts: any[]) {
       }
       
     } catch (error) {
-      console.error(`Error fetching variants for product ${product.node.id}:`, error);
+      continue;
     }
   }
   
-  // Extrapolate for all products
   const sampleRatio = sampleProducts.length / Math.max(allProducts.length, 1);
   
   return {
@@ -1336,7 +1494,6 @@ async function getInventoryMetrics(admin: any, allProducts: any[]) {
   };
 }
 
-// Your original status breakdown function
 function getProductStatusBreakdown(allProducts: any[]) {
   const statusCounts = {
     draft: 0,
@@ -1355,7 +1512,6 @@ function getProductStatusBreakdown(allProducts: any[]) {
   return statusCounts;
 }
 
-// Your original timeline function
 function getProductTimeline(allProducts: any[]) {
   const last30Days = new Date();
   last30Days.setDate(last30Days.getDate() - 30);
@@ -1369,7 +1525,6 @@ function getProductTimeline(allProducts: any[]) {
   };
 }
 
-// Enhanced SEO insights with detailed product tracking
 function getSEOInsights(allProducts: any[]) {
   const productsWithMissingMeta = allProducts.filter((p: any) => 
     !p.node.description || p.node.description.trim().length < 50
@@ -1403,25 +1558,20 @@ function getSEOInsights(allProducts: any[]) {
   };
 }
 
-// Your original optimization score function
 function calculateOptimizationScore(mainData: any, inventory: any, seoInsights: any, statusBreakdown: any) {
   let score = 0;
   
-  // Active product rate (30% of score)
   const activeRate = mainData.totalProducts > 0 ? (mainData.activeProducts / mainData.totalProducts) * 100 : 0;
   score += (activeRate / 100) * 30;
   
-  // Collection utilization (20% of score)
   const collectionUtilization = mainData.totalCollections > 0 ? 
     (mainData.collectionStats.collectionsWithProducts / mainData.totalCollections) * 100 : 0;
   score += (collectionUtilization / 100) * 20;
   
-  // Inventory health (30% of score)
   const inventoryHealth = inventory.totalVariants > 0 ? 
     (1 - (inventory.outOfStock / inventory.totalVariants)) * 100 : 100;
   score += (inventoryHealth / 100) * 30;
   
-  // Recent activity (20% of score)
   const recentProducts = mainData.newProductsThisMonth;
   const recentScore = Math.min(20, (recentProducts / 10) * 20);
   score += recentScore;
@@ -1429,20 +1579,16 @@ function calculateOptimizationScore(mainData: any, inventory: any, seoInsights: 
   return Math.round(Math.min(100, score));
 }
 
-// Your original chart data functions
 function generateChartData(allProducts: any[], collectionsWithCounts: any[], statusBreakdown: any) {
-  // Product Status Pie Chart Data with REAL percentages
   const total = statusBreakdown.active + statusBreakdown.draft + statusBreakdown.archived;
   const activePercentage = total > 0 ? (statusBreakdown.active / total) * 100 : 0;
   const draftPercentage = total > 0 ? (statusBreakdown.draft / total) * 100 : 0;
   const archivedPercentage = total > 0 ? (statusBreakdown.archived / total) * 100 : 0;
 
-  // Collections Bar Chart Data
   const topCollections = [...collectionsWithCounts]
     .sort((a: any, b: any) => b.productCount - a.productCount)
     .slice(0, 8);
   
-  // Monthly Product Growth Line Chart Data
   const monthlyData = generateMonthlyProductData(allProducts);
 
   return {
@@ -1460,7 +1606,6 @@ function generateMonthlyProductData(allProducts: any[]) {
   const monthlyCounts: { [key: string]: number } = {};
   const currentYear = new Date().getFullYear();
   
-  // Initialize last 6 months
   for (let i = 5; i >= 0; i--) {
     const date = new Date();
     date.setMonth(date.getMonth() - i);
@@ -1468,7 +1613,6 @@ function generateMonthlyProductData(allProducts: any[]) {
     monthlyCounts[key] = 0;
   }
   
-  // Count products by month
   allProducts.forEach((product: any) => {
     const productDate = new Date(product.node.createdAt);
     if (productDate.getFullYear() === currentYear) {
@@ -1488,13 +1632,12 @@ function generateMonthlyProductData(allProducts: any[]) {
   };
 }
 
-// ==================== OPTIMIZED LOADER FUNCTION (Using orders page strategy) ====================
+// ==================== 5. LOADER FUNCTION ====================
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
     const { admin, session } = await authenticate.admin(request);
     const shop = session.shop;
 
-    // ==================== FETCH PRODUCTS WITH PAGINATION (Orders page strategy) ====================
     let allProducts: any[] = [];
     let hasNextPage = true;
     let endCursor: string | null = null;
@@ -1544,7 +1687,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       if (!hasNextPage || allProducts.length >= 1000) break;
     }
 
-    // ==================== FETCH COLLECTIONS WITH PAGINATION ====================
     let allCollections: any[] = [];
     let hasMoreCollections = true;
     let collectionsEndCursor: string | null = null;
@@ -1584,24 +1726,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       if (!hasMoreCollections || allCollections.length >= 500) break;
     }
 
-    // ==================== RETURN EMPTY DATA IF NO PRODUCTS ====================
     if (allProducts.length === 0) {
       return json(getEmptyData(shop));
     }
 
-    // ==================== PROCESS DATA ====================
     const processedData = await processProductsData(admin, allProducts, allCollections, shop);
     return json(processedData);
     
   } catch (error: any) {
-    console.error("Error in products loader:", error);
     return json(getEmptyData(""));
   }
 };
 
-// Process products data function
 async function processProductsData(admin: any, allProducts: any[], allCollections: any[], shop: string) {
-  // ==================== PARALLEL METRICS CALCULATION ====================
   const [
     inventoryMetrics,
     statusBreakdown,
@@ -1614,7 +1751,6 @@ async function processProductsData(admin: any, allProducts: any[], allCollection
     getSEOInsights(allProducts)
   ]);
 
-  // ==================== PARALLEL COLLECTION COUNTS ====================
   const collectionsWithCounts = await Promise.all(
     allCollections.map(async (collection: any) => {
       try {
@@ -1624,7 +1760,6 @@ async function processProductsData(admin: any, allProducts: any[], allCollection
           productCount: productCount
         };
       } catch (error) {
-        console.error(`Error fetching products for collection ${collection.node.title}:`, error);
         return {
           ...collection,
           productCount: 0
@@ -1633,7 +1768,6 @@ async function processProductsData(admin: any, allProducts: any[], allCollection
     })
   );
 
-  // ==================== YOUR ORIGINAL CALCULATIONS ====================
   const totalProducts = allProducts.length;
   const activeProducts = allProducts.filter((p: any) => p.node.status === "ACTIVE").length;
 
@@ -1654,7 +1788,6 @@ async function processProductsData(admin: any, allProducts: any[], allCollection
       : null,
   };
 
-  // Calculate optimization score with complete data
   const optimizationScore = calculateOptimizationScore(
     { totalProducts, activeProducts, newProductsThisMonth, collectionStats },
     inventoryMetrics,
@@ -1662,7 +1795,6 @@ async function processProductsData(admin: any, allProducts: any[], allCollection
     statusBreakdown
   );
 
-  // Generate chart data with REAL percentages from complete data
   const chartData = generateChartData(allProducts, collectionsWithCounts, statusBreakdown);
 
   return {
@@ -1743,7 +1875,8 @@ function getEmptyData(shop: string) {
   };
 }
 
-// ==================== ICON COMPONENTS ====================
+
+// ==================== 6. ICON COMPONENTS ====================
 const Icon = {
   Print: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -1759,10 +1892,85 @@ const Icon = {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
     </svg>
+  ),
+  Growth: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+    </svg>
+  ),
+  SEO: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  ),
+  Products: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+    </svg>
+  ),
+  Chart: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </svg>
+  ),
+  Inventory: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/>
+    </svg>
+  ),
+  Status: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  ),
+  Timeline: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+    </svg>
+  ),
+  Collections: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 6h-5v-2c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2H2v15h20V6zm-7-2v2H9V4h6zm7 15H4v-2h16v2zm0-4H4V8h3v2h2V8h6v2h2V8h3v11z"/>
+    </svg>
+  ),
+  Trophy: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C13.1 2 14 2.9 14 4c0 .74-.4 1.38-1 1.72v.78c0 .42.28.78.68.93C15.53 7.94 17 9.84 17 12v.5l-2 2V12c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v4.5l-2-2V12c0-2.16 1.47-4.06 3.32-4.57.4-.15.68-.51.68-.93v-.78c-.6-.34-1-.98-1-1.72 0-1.1.9-2 2-2zm-2 9c.55 0 1 .45 1 1v3.5l2 2V12c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v5.5l2-2V12c0-.55.45-1 1-1h2z"/>
+    </svg>
+  ),
+  Insights: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 8c-1.45 0-2.26 1.44-1.93 2.51l-3.55 3.56c-.3-.09-.74-.09-1.04 0l-2.55-2.55C12.27 10.45 11.46 9 10 9c-1.45 0-2.27 1.44-1.93 2.52l-4.56 4.55C2.44 15.74 1 16.55 1 18c0 1.1.9 2 2 2 1.45 0 2.26-1.44 1.93-2.51l4.55-4.56c.3.09.74.09 1.04 0l2.55 2.55C12.73 16.55 13.54 18 15 18c1.45 0 2.27-1.44 1.93-2.52l3.56-3.55c1.07.33 2.51-.48 2.51-1.93 0-1.1-.9-2-2-2z"/>
+    </svg>
+  ),
+  Folder: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+    </svg>
+  ),
+  Lightning: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+    </svg>
+  ),
+  AddProduct: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+    </svg>
+  ),
+  ManageCollections: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+    </svg>
+  ),
+  Export: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
+    </svg>
   )
 };
 
-// ==================== COMPONENT ====================
+// ==================== 7. MAIN COMPONENT ====================
 export default function Products() {
   const data = useLoaderData<typeof loader>();
   const navigation = useNavigation();
@@ -1770,7 +1978,6 @@ export default function Products() {
 
   const isLoading = navigation.state === 'loading';
 
-  // ==================== YOUR ORIGINAL FORMATTING FUNCTIONS ====================
   const formatNumber = (num: number | null | undefined) => {
     if (num === null || num === undefined || isNaN(num)) return '0';
     return num.toLocaleString();
@@ -1788,14 +1995,12 @@ export default function Products() {
     }).format(amount);
   };
 
-  // Tooltip Component
   const Tooltip = ({ text, children }: { text: string; children: React.ReactNode }) => (
     <span className="tooltip" data-tooltip={text}>
       {children}
     </span>
   );
 
-  // Trend Indicator Component
   const TrendIndicator = ({ value, previousValue }: { value: number; previousValue: number }) => {
     const trend = value - previousValue;
     const trendPercent = previousValue > 0 ? (trend / previousValue) * 100 : 0;
@@ -1808,7 +2013,6 @@ export default function Products() {
     );
   };
 
-  // Quality Badge Component
   const QualityBadge = ({ score }: { score: number }) => {
     let qualityClass = '';
     let label = '';
@@ -1834,18 +2038,12 @@ export default function Products() {
     );
   };
 
-
-
-
-
-
-   // Calculate real percentages for pie chart from ALL products
   const activePercentage = data.enhancedMetrics.statusBreakdown.active;
   const draftPercentage = data.enhancedMetrics.statusBreakdown.draft;
   const archivedPercentage = data.enhancedMetrics.statusBreakdown.archived;
   const totalStatus = activePercentage + draftPercentage + archivedPercentage;
 
-  return (
+      return (
     <div className="products-dashboard">
       {/* Dashboard Header */}
       <div className="dashboard-header">
@@ -1860,36 +2058,17 @@ export default function Products() {
             <Icon.Manage />
             Manage Products
           </a>
-      <button 
-  className="print-report-btn"
-  onClick={() => {
-    console.log('🖨️ NEW PRINT BUTTON CLICKED');
-    window.print();
-  }}
-  style={{
-    background: '#2563eb',
-    color: 'white',
-    border: 'none',
-    padding: '10px 16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '600',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    transition: 'all 0.2s ease'
-  }}
->
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-  </svg>
-  Print Report
-</button>
+          <button 
+            className="print-report-btn"
+            onClick={() => window.print()}
+          >
+            <Icon.Print />
+            Print Report
+          </button>
         </div>
       </div>
 
-      {/* Optimization Score with Clickable Needs Attention */}
+      {/* Optimization Score */}
       <div className="optimization-score">
         <div className="score-card">
           <div className="score-value">{data.enhancedMetrics.optimizationScore}</div>
@@ -1897,43 +2076,27 @@ export default function Products() {
           <div className="score-description">Based on analysis of {formatNumber(data.totalProducts)} products</div>
         </div>
         <div className="insights-pills">
-  <Link 
-    to="/attention"
-    className={`insight-pill clickable ${data.insights.needsAttention > 0 ? 'warning' : 'success'}`}
-  >
-    <Icon.Attention />
-    {data.insights.needsAttention} need attention
-  </Link>
-  <div className="insight-pill info non-clickable">
-    {data.insights.growthOpportunity} new this month
-  </div>
-  <div className="insight-pill info non-clickable">
-    {data.insights.seoImprovements} SEO improvements
-  </div>
-</div>
+          <Link 
+            to="/attention"
+            className={`insight-pill clickable ${data.insights.needsAttention > 0 ? 'warning' : 'success'}`}
+          >
+            <Icon.Attention />
+            {data.insights.needsAttention} need attention
+          </Link>
+          <div className="insight-pill info non-clickable">
+            <Icon.Growth />
+            {data.insights.growthOpportunity} new this month
+          </div>
+          <div className="insight-pill info non-clickable">
+            <Icon.SEO />
+            {data.insights.seoImprovements} SEO improvements
+          </div>
+        </div>
       </div>
 
-
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-          {/* Products Overview Section */}
+      {/* Products Overview Section */}
       <div className="products-overview">
-        <h2>📦 Products Overview</h2>
+        <h2><Icon.Products /> Products Overview</h2>
         <div className="primary-metrics-grid">
           <div className="metric-card total-products">
             <div className="metric-value">{formatNumber(data.totalProducts)}</div>
@@ -1958,9 +2121,8 @@ export default function Products() {
       </div>
 
       {/* Charts Section */}
-            {/* Charts Section */}
       <div className="charts-section">
-        <h2>📊 Visual Analytics</h2>
+        <h2><Icon.Chart /> Visual Analytics</h2>
         <div className="charts-grid">
           {/* Product Status Distribution */}
           <div className="chart-container">
@@ -2001,7 +2163,6 @@ export default function Products() {
           </div>
 
           {/* Top Collections */}
-                {/* Top Collections */}
           <div className="chart-container">
             <h3>Top Collections</h3>
             <div className="chart-placeholder bar-chart">
@@ -2009,7 +2170,6 @@ export default function Products() {
                 <div className="bar-chart-visual">
                   {data.chartData.topCollections.slice(0, 5).map((collection: any, index: number) => {
                     const maxCount = Math.max(...data.chartData.topCollections.map((c: any) => c.productCount));
-                    // Ensure minimum height for visibility, even for small numbers
                     const heightPercentage = maxCount > 0 ? 
                       Math.max(10, (collection.productCount / maxCount) * 100) : 10;
                     return (
@@ -2032,18 +2192,12 @@ export default function Products() {
           </div>
 
           {/* Monthly Product Growth */}
-
-
-
-          
-                    {/* Monthly Product Growth */}
           <div className="chart-container">
             <h3>Monthly Product Growth</h3>
             <div className="chart-placeholder line-chart">
               <div className="chart-visual">
                 <div className="line-chart-visual">
                   <div className="line-graph">
-                    {/* Connect the dots with a line */}
                     <svg className="line-path" viewBox="0 0 100 100" preserveAspectRatio="none">
                       <path 
                         className="line" 
@@ -2060,7 +2214,6 @@ export default function Products() {
                       />
                     </svg>
                     
-                    {/* Data points */}
                     {data.chartData.monthlyData.labels.map((label: string, index: number) => {
                       const maxData = Math.max(...data.chartData.monthlyData.data);
                       const heightPercentage = maxData > 0 ? (data.chartData.monthlyData.data[index] / maxData) * 100 : 0;
@@ -2093,16 +2246,9 @@ export default function Products() {
         </div>
       </div>
 
-
-
-
-
-
-
       {/* Inventory Management Section */}
-         {/* Inventory Management Section */}
       <div className="inventory-section">
-        <h2>📊 Inventory Overview</h2>
+        <h2><Icon.Inventory /> Inventory Overview</h2>
         <div className="inventory-grid">
           <div className="inventory-card total-variants">
             <Tooltip text="Total number of product variants across all products">
@@ -2150,7 +2296,7 @@ export default function Products() {
       {/* Product Status & Timeline */}
       <div className="status-timeline-section">
         <div className="status-breakdown">
-          <h3>📈 Product Status</h3>
+          <h3><Icon.Status /> Product Status</h3>
           <div className="status-grid">
             <div className="status-card active">
               <div className="status-value">{formatNumber(data.enhancedMetrics.statusBreakdown.active)}</div>
@@ -2168,7 +2314,7 @@ export default function Products() {
         </div>
 
         <div className="timeline-breakdown">
-          <h3>🕒 Product Timeline</h3>
+          <h3><Icon.Timeline /> Product Timeline</h3>
           <div className="timeline-grid">
             <div className="timeline-card">
               <div className="timeline-value">{formatNumber(data.enhancedMetrics.productTimeline.last30Days)}</div>
@@ -2187,9 +2333,8 @@ export default function Products() {
       </div>
 
       {/* SEO Insights */}
-            {/* SEO Insights */}
       <div className="seo-section">
-        <h2>🔍 SEO Insights</h2>
+        <h2><Icon.SEO /> SEO Insights</h2>
         <div className="seo-grid">
           <div className="seo-card">
             <Tooltip text={`${data.enhancedMetrics.seoInsights.missingMeta} products have short or missing descriptions that affect SEO`}>
@@ -2228,7 +2373,7 @@ export default function Products() {
 
       {/* Collections Overview Section */}
       <div className="collections-overview">
-        <h2>📚 Collections Analytics</h2>
+        <h2><Icon.Collections /> Collections Analytics</h2>
         
         <div className="collections-stats-grid">
           <div className="collection-stat-card">
@@ -2255,7 +2400,7 @@ export default function Products() {
         {/* Largest Collection Highlight */}
         {data.collectionStats.largestCollection && data.collectionStats.largestCollection.productCount > 0 && (
           <div className="largest-collection">
-            <h3>🏆 Largest Collection</h3>
+            <h3><Icon.Trophy /> Largest Collection</h3>
             <div className="collection-name">
               {data.collectionStats.largestCollection.node.title}
             </div>
@@ -2268,7 +2413,7 @@ export default function Products() {
 
       {/* Performance Insights */}
       <div className="performance-insights">
-        <h2>📊 Performance Insights</h2>
+        <h2><Icon.Insights /> Performance Insights</h2>
         <div className="insights-grid">
           <div className="insight-item">
             <div className="insight-value">
@@ -2295,7 +2440,7 @@ export default function Products() {
 
       {/* Collections Breakdown */}
       <div className="collections-breakdown">
-        <h2>🗂️ Collections Breakdown</h2>
+        <h2><Icon.Folder /> Collections Breakdown</h2>
         
         {data.collectionsWithCounts.length > 0 ? (
           <div className="collections-grid">
@@ -2330,7 +2475,7 @@ export default function Products() {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <h2>⚡ Quick Actions</h2>
+        <h2><Icon.Lightning /> Quick Actions</h2>
         <div className="actions-grid">
           <a 
             href={`https://${data.shop}/admin/products/new`} 
@@ -2338,7 +2483,7 @@ export default function Products() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="action-icon">➕</div>
+            <Icon.AddProduct />
             <div className="action-title">Add New Product</div>
             <div className="action-description">Create a new product</div>
           </a>
@@ -2348,7 +2493,7 @@ export default function Products() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="action-icon">📁</div>
+            <Icon.ManageCollections />
             <div className="action-title">Manage Collections</div>
             <div className="action-description">Organize your products</div>
           </a>
@@ -2358,12 +2503,12 @@ export default function Products() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="action-icon">📦</div>
+            <Icon.Inventory />
             <div className="action-title">Inventory Management</div>
             <div className="action-description">Update stock levels</div>
           </a>
           <div className="action-card" onClick={() => window.print()}>
-            <div className="action-icon">📊</div>
+            <Icon.Export />
             <div className="action-title">Export Report</div>
             <div className="action-description">Print or save as PDF</div>
           </div>

@@ -31,6 +31,7 @@ model StoreEmailSettings {
   fromEmail       String
   fromName        String
   enabled         Boolean  @default(true)
+  additionalEmails String[] // NEW: Add this line for multiple email addresses
   sendGridApiKey  String?
   scheduleEnabled Boolean  @default(false)
   scheduleTime    String   @default("09:00")

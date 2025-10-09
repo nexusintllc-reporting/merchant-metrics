@@ -1,3 +1,4 @@
+
 // import sgMail from "@sendgrid/mail";
 // import { StoreEmailSettings } from "../models/StoreEmailSettings.server";
 // import { OrderData } from "./analyticsCollector.server";
@@ -18,11 +19,11 @@
 //     try {
 //       // Validate SendGrid configuration
 //       if (!process.env.SENDGRID_API_KEY) {
-//         throw new Error('SendGrid API key is not configured');
+//         throw new Error('Email service not configured');
 //       }
 
 //       if (!process.env.SENDGRID_FROM_EMAIL) {
-//         throw new Error('SENDGRID_FROM_EMAIL is not configured');
+//         throw new Error('Sender email not configured');
 //       }
 
 //       // Fetch store email settings
@@ -42,7 +43,7 @@
 
 //       // Validate recipient email
 //       if (!settings.fromEmail || !this.isValidEmail(settings.fromEmail)) {
-//         throw new Error(`Invalid recipient email address: ${settings.fromEmail}`);
+//         throw new Error('Invalid recipient email address');
 //       }
 
 //       // Build email with analytics data
@@ -51,7 +52,7 @@
 //       const msg = {
 //         to: settings.fromEmail,
 //         from: process.env.SENDGRID_FROM_EMAIL,
-//         subject: `📊 Daily Analytics Report - ${this.shop} - ${new Date().toLocaleDateString()}`,
+//         subject: `Daily Analytics Report - ${this.shop} - ${new Date().toLocaleDateString()}`,
 //         html: emailContent,
 //         text: this.generateTextVersion(analyticsData, this.shop),
 //       };
@@ -65,27 +66,13 @@
 //       };
 
 //     } catch (error: any) {
-//       console.error('Error sending email:', error);
-      
-//       // Enhanced error logging for SendGrid
-//       if (error.response) {
-//         console.error('SendGrid API Response Details:');
-//         console.error('Status:', error.response.status);
-//         console.error('Body:', JSON.stringify(error.response.body, null, 2));
-        
-//         // Provide specific error messages based on SendGrid response
-//         if (error.response.status === 403) {
-//           throw new Error('SendGrid API key is invalid or does not have sending permissions');
-//         } else if (error.response.status === 401) {
-//           throw new Error('SendGrid authentication failed. API key may be invalid.');
-//         } else if (error.response.body?.errors) {
-//           const sendGridError = error.response.body.errors[0];
-//           throw new Error(`SendGrid error: ${sendGridError.message}`);
-//         }
-//       }
-      
-//       throw new Error(`Email delivery failed: ${error.message}`);
-//     }
+//   console.error('🔍 DEBUG: SendGrid Error Details:', error);
+//   console.error('🔍 DEBUG: SendGrid Response:', error?.response?.body);
+//   console.error('🔍 DEBUG: SendGrid Code:', error?.code);
+  
+//   // Include the actual error message
+//   throw new Error(`Failed to send analytics email: ${error.message}`);
+// }
 //   }
 
 //   private isValidEmail(email: string): boolean {
@@ -98,7 +85,7 @@
 //     const formatNumber = (num: number) => num.toLocaleString();
 //     const formatPercent = (num: number) => `${num >= 0 ? '+' : ''}${num.toFixed(1)}%`;
 
-//     const getTrendIcon = (value: number) => value >= 0 ? '↗' : '↘';
+//     const getTrendIcon = (value: number) => value >= 0 ? '↑' : '↓';
 
 //     return `
 // <!DOCTYPE html>
@@ -106,7 +93,7 @@
 // <head>
 //     <meta charset="utf-8">
 //     <meta name="viewport" content="width=device-width, initial-scale=1">
-//     <title>📊 Analytics Report - ${shop}</title>
+//     <title>Analytics Report - ${shop}</title>
 //     <style>
 //         body {
 //             font-family: Arial, sans-serif;
@@ -306,7 +293,7 @@
 //     <div class="container">
 //         <!-- Header -->
 //         <div class="header">
-//             <h1>📊 Analytics Report</h1>
+//             <h1>Analytics Report</h1>
 //             <div class="subtitle">${shop} • ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
 //         </div>
 
@@ -493,9 +480,9 @@
 //             ${data.revenueChangeVsYesterday !== 0 || data.ordersChangeVsYesterday !== 0 ? `
 //             <div class="highlight">
 //                 <strong>Performance Insight:</strong><br>
-//                 ${data.revenueChangeVsYesterday > 0 ? `📈 Revenue is up ${formatPercent(data.revenueChangeVsYesterday)} from yesterday.` : ''}
-//                 ${data.revenueChangeVsYesterday < 0 ? `📉 Revenue is down ${formatPercent(Math.abs(data.revenueChangeVsYesterday))} from yesterday.` : ''}
-//                 ${data.revenueChangeVsYesterday === 0 && data.ordersChangeVsYesterday > 0 ? `📈 Order volume is up ${formatPercent(data.ordersChangeVsYesterday)} from yesterday.` : ''}
+//                 ${data.revenueChangeVsYesterday > 0 ? `Revenue is up ${formatPercent(data.revenueChangeVsYesterday)} from yesterday.` : ''}
+//                 ${data.revenueChangeVsYesterday < 0 ? `Revenue is down ${formatPercent(Math.abs(data.revenueChangeVsYesterday))} from yesterday.` : ''}
+//                 ${data.revenueChangeVsYesterday === 0 && data.ordersChangeVsYesterday > 0 ? `Order volume is up ${formatPercent(data.ordersChangeVsYesterday)} from yesterday.` : ''}
 //                 ${data.bestDay && data.bestDay.revenue > data.todayRevenue ? `Your best day was ${new Date(data.bestDay.date).toLocaleDateString()} with ${formatCurrency(data.bestDay.revenue)} in revenue.` : ''}
 //             </div>
 //             ` : ''}
@@ -556,8 +543,6 @@
 // }
 
 
-
-
 import sgMail from "@sendgrid/mail";
 import { StoreEmailSettings } from "../models/StoreEmailSettings.server";
 import { OrderData } from "./analyticsCollector.server";
@@ -600,16 +585,21 @@ export class AnalyticsEmailService {
         };
       }
 
-      // Validate recipient email
-      if (!settings.fromEmail || !this.isValidEmail(settings.fromEmail)) {
-        throw new Error('Invalid recipient email address');
+      // NEW: Get all email addresses (primary + additional)
+      const allEmails = [
+        settings.fromEmail,
+        ...(settings.additionalEmails || [])
+      ].filter(email => email && email.trim() && this.isValidEmail(email));
+
+      if (allEmails.length === 0) {
+        throw new Error('No valid recipient email addresses configured');
       }
 
       // Build email with analytics data
       const emailContent = this.buildAnalyticsEmail(analyticsData, this.shop);
       
       const msg = {
-        to: settings.fromEmail,
+        to: allEmails, // NEW: Send to all emails
         from: process.env.SENDGRID_FROM_EMAIL,
         subject: `Daily Analytics Report - ${this.shop} - ${new Date().toLocaleDateString()}`,
         html: emailContent,
@@ -620,18 +610,18 @@ export class AnalyticsEmailService {
       
       return {
         success: true,
-        message: 'Email sent successfully',
+        message: `Email sent successfully to ${allEmails.length} recipient(s)`,
+        recipients: allEmails,
         result
       };
 
     } catch (error: any) {
-  console.error('🔍 DEBUG: SendGrid Error Details:', error);
-  console.error('🔍 DEBUG: SendGrid Response:', error?.response?.body);
-  console.error('🔍 DEBUG: SendGrid Code:', error?.code);
-  
-  // Include the actual error message
-  throw new Error(`Failed to send analytics email: ${error.message}`);
-}
+      console.error('🔍 DEBUG: SendGrid Error Details:', error);
+      console.error('🔍 DEBUG: SendGrid Response:', error?.response?.body);
+      console.error('🔍 DEBUG: SendGrid Code:', error?.code);
+      
+      throw new Error(`Failed to send analytics email: ${error.message}`);
+    }
   }
 
   private isValidEmail(email: string): boolean {
