@@ -1388,6 +1388,7 @@ export default function EmailSettings() {
               <input
                 type="time"
                 value={settings.scheduleTime || '09:00'}
+                step="60" // Only allow whole hours
                 onChange={(e) => setSettings({ ...settings, scheduleTime: e.target.value })}
                 style={styles.timeInput}
               />
@@ -1401,22 +1402,21 @@ export default function EmailSettings() {
                 Timezone:
               </label>
               <select
-                value={settings.timezone || 'UTC'}
-                onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-                style={styles.select}
-              >
-                <option value="UTC">UTC</option>
-                <option value="America/New_York">Eastern Time (ET)</option>
-                <option value="America/Chicago">Central Time (CT)</option>
-                <option value="America/Denver">Mountain Time (MT)</option>
-                <option value="America/Los_Angeles">Pacific Time (PT)</option>
-                <option value="Europe/London">London (GMT)</option>
-                <option value="Europe/Paris">Paris (CET)</option>
-                <option value="Asia/Dubai">Dubai (GST)</option>
-                <option value="Asia/Kolkata">India (IST)</option>
-                <option value="Asia/Tokyo">Tokyo (JST)</option>
-                <option value="Australia/Sydney">Sydney (AEST)</option>
-              </select>
+  value={settings.timezone || 'UTC'}
+  onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
+>
+  <option value="UTC">UTC</option>
+  <option value="America/New_York">Eastern Time (ET)</option>
+  <option value="America/Chicago">Central Time (CT)</option>
+  <option value="America/Denver">Mountain Time (MT)</option>
+  <option value="America/Los_Angeles">Pacific Time (PT)</option>
+  <option value="Europe/London">London (GMT)</option>
+  <option value="Europe/Paris">Paris (CET)</option>
+  <option value="Asia/Dubai">Dubai (GST)</option>
+  <option value="Asia/Kolkata">India (IST)</option>
+  <option value="Asia/Tokyo">Tokyo (JST)</option>
+  <option value="Australia/Sydney">Sydney (AEST)</option>
+</select>
               <small style={styles.helperText}>
                 Select your local timezone
               </small>
